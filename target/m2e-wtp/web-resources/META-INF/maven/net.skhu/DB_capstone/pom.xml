@@ -100,9 +100,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<compilerArgs>
+						<arg>-verbose</arg>
+						<arg>-parameters</arg>
+					</compilerArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>

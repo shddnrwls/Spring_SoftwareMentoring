@@ -98,7 +98,7 @@
 		<div class="pull-right">
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<a class="btn btn-primary btn-sm"
-					href="${R}admin/noticeEdit?id=${ notice.id }&${ pagination.queryString }">수정</a>
+					href="${R}user/noticeEdit?id=${ notice.id }&${ pagination.queryString }">수정</a>
 				<a class="btn btn-danger btn-sm"
 					href="${R}user/noticeDelete?id=${ notice.id }&${ pagination.queryString }"
 					data-confirm-delete>삭제</a>

@@ -39,7 +39,9 @@ public class NoticeController {
     @Secured("ROLE_ADMIN")
     @RequestMapping(value="noticeEdit", method=RequestMethod.GET)
     public String edit(@RequestParam("id") int id, Pagination pagination, Model model) {
+    	System.out.println("들어오냐1");
         model.addAttribute("noticeModel", noticeService.findOne(id));
+        System.out.println("들어오냐4");
         return "admin/noticeEdit";
     }
 

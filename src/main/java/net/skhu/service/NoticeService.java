@@ -26,6 +26,7 @@ public class NoticeService {
 	}
 
 	public void update(NoticeModel a){
+		System.out.println("들어오냐2");
 		noticeRepository.update(a.getId(), a.getTitle(), a.getContent());
 	}
 
