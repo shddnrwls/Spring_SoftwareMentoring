@@ -77,12 +77,12 @@
 						data-toggle="modal" data-target="#adminModal"><button
 								type="button" class="btn btn-outline-light btn-sm">설명
 								수정</button></a></li>
-					<li><a href="${R}admin/index" class="page-scroll"><button
-								type="button" class="btn btn-outline-light btn-sm">관리자
-								페이지</button></a></li>
-					<li><a href="${R}admin/allMentorRoom" class="page-scroll"><button
-								type="button" class="btn btn-outline-light btn-sm">관리자
-								멘토방</button></a></li>
+					<li class="nav-item"><a class="nav-link js-scroll-trigger"
+						href="${R}admin/index"><button type="button"
+								class="btn btn-outline-light btn-sm">관리자 페이지</button></a></li>
+					<li class="nav-item"><a class="nav-link js-scroll-trigger"
+						href="${R}admin/allMentorRoom"><button type="button"
+								class="btn btn-outline-light btn-sm">관리자 멘토방</button></a></li>
 				</sec:authorize>
 
 			</ul>
@@ -233,7 +233,7 @@
 
 	<!-- Bootstrap core JavaScript -->
 	<script src="${R}res/js/jquery.min.js"></script>
-	<script src="v${R}res/js/bootstrap.bundle.min.js"></script>
+	<script src="${R}res/js/bootstrap.bundle.min.js"></script>
 
 	<!-- Plugin JavaScript -->
 	<script src="${R}res/js/jquery.easing.min.js"></script>
