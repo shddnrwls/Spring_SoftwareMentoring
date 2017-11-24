@@ -63,7 +63,7 @@
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="${R}user/noticeList">공지사항</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#education">M3</a></li>
+					href="${R}user/mentorApply">멘토 신청</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="#skills">M4</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
@@ -80,6 +80,9 @@
 					<li><a href="${R}admin/index" class="page-scroll"><button
 								type="button" class="btn btn-outline-light btn-sm">관리자
 								페이지</button></a></li>
+					<li><a href="${R}admin/allMentorRoom" class="page-scroll"><button
+								type="button" class="btn btn-outline-light btn-sm">관리자
+								멘토방</button></a></li>
 				</sec:authorize>
 
 			</ul>

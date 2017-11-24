@@ -961,15 +961,11 @@
 						</tr>
 					</thead>
 					<tbody>
-
 						<c:forEach var="mentorApply" items="${ mentorList }">
 							<tr>
-								<td><a href="${R}admin/mentorApply/${mentorApply.id}"
-									style="color: white"> ${ mentorApply.student.user.name }</a></td>
+								<td><a href="${R}admin/mentorApply/${mentorApply.id}"> ${ mentorApply.student.user.name }</a></td>
 								<td><a href="${R}admin/success/${mentorApply.id}"><button
 											type="button" class="btn btn-primary" id="success">승인</button></a>
-
-
 									<a href="${R}admin/delete/${mentorApply.id}"><button
 											type="button" class="btn btn-primary" id="delete">거부</button></a>
 								</td>

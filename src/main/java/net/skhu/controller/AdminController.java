@@ -135,12 +135,12 @@ public class AdminController {
 		return "redirect:/admin/index";
 	}
 
-	@RequestMapping("mentorRoom")
+	@RequestMapping("allMentorRoom")
 	public String mentorRoom(Model model) {
 		List<MentorRoom> mentorList = mentorRoomRepository.findAll();
 		model.addAttribute("mentorList", mentorList);
 
-		return "admin/mentorRoom";
+		return "admin/allMentorRoom";
 	}
 
 	@RequestMapping(value = "mentorApply/{id}", method = RequestMethod.GET)
