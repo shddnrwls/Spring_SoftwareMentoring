@@ -98,21 +98,50 @@
 
 	<div class="container-fluid p-5">
 
-
-		<c:forEach var="mentorRoom" items="${ mentorList }">
-			<div class="text-center">
-				<img class="mentor" src="${R}res/img/2.jpg" alt=""> <img
-					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
-					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
-					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
-					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
-					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
-					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
-					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
-					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
-					class="mentor" src="${R}res/img/2.jpg" alt="">
+		<div class="text-center">
+			<div class="row">
+				<c:forEach var="mentorRoom" items="${ mentorList }">
+					<%-- <div class="col-sm">
+						<a href="${R}admin/adminMentorRoom/${ mentorRoom.id }"
+							style="cursor: pointer"> <img class="mentor"
+							src="${R}res/img/2.jpg" alt="">
+						</a>
+						<p>${ mentorRoom.student.user.name }</p>
+						<p>${ mentorRoom.subject }</p>
+					</div> --%>
+				</c:forEach>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
+				<div class="col-sm">
+					<img class="mentor" src="${R}res/img/2.jpg" alt="">
+				</div>
 			</div>
-		</c:forEach>
+		</div>
 
 
 	</div>
