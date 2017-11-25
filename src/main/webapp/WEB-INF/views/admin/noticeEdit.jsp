@@ -90,21 +90,19 @@
 
 	<div class="container text-center" style="padding-top: 10%;">
 
-		<div>
-			<form:form method="post" modelAttribute="noticeModel">
+		<form:form method="post" modelAttribute="noticeModel">
 
-				<form:input path="title" class="form-control"
-					placeholder="제목을 입력해주세요." />
-				<form:errors path="title" class="error" />
+			<form:input path="title" class="form-control"
+				placeholder="제목을 입력해주세요." />
+			<form:errors path="title" class="error" />
 
-				<br />
+			<br />
 
-				<div id="summernote">${ noticeModel.content }</div>
-				<form:errors path="content" class="error" />
-				<input type="hidden" name="content" />
+			<div id="summernote">${ noticeModel.content }</div>
+			<form:errors path="content" class="error" />
+			<input type="hidden" name="content" />
 
-			</form:form>
-		</div>
+		</form:form>
 
 		<br /> <br />
 

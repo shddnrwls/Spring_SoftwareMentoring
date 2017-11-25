@@ -30,6 +30,16 @@
 <!-- Custom styles for this template -->
 <link href="${R}res/css/resume.min.css" rel="stylesheet">
 
+<style>
+.mentor {
+	min-width: 300px;
+	max-width: 300px;
+	min-height: 300px;
+	max-height: 300px;
+	border-radius: 50% !important;
+}
+</style>
+
 </head>
 
 <body id="page-top">
@@ -90,8 +100,18 @@
 
 
 		<c:forEach var="mentorRoom" items="${ mentorList }">
-			<img style="width: 20%; height: 200px;" class="img-fluid img-profile rounded-circle mx-auto mb-2"
-			src="${R}res/img/1.jpg" alt="">
+			<div class="text-center">
+				<img class="mentor" src="${R}res/img/2.jpg" alt=""> <img
+					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
+					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
+					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
+					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
+					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
+					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
+					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
+					class="mentor" src="${R}res/img/2.jpg" alt=""> <img
+					class="mentor" src="${R}res/img/2.jpg" alt="">
+			</div>
 		</c:forEach>
 
 
