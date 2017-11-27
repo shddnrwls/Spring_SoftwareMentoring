@@ -65,11 +65,11 @@
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="${R}user/mentorApply">멘토 신청</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#skills">M4</a></li>
+					href="${R}user/menteeSelect">멘티 신청</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#interests">M5</a></li>
+					href="${R}user/myMentorRoom">멘토방</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#awards">M6</a>
+					href="${R}user/myPage">My Page</a>
 					<hr /></li>
 
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -113,9 +113,6 @@
 							<span class="fa fa-pencil"></span> 멘토 자격
 						</h3>
 						<hr />
-						<%
-							pageContext.setAttribute("newLineChar", "\r\n");
-						%>
 						<p>${fn:replace(manage_main.contents1, newLineChar, "<br/>")}</p>
 					</div>
 				</div>

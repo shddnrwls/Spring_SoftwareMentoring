@@ -12,143 +12,164 @@
 <html lang="en">
 
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>문의 글</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- Favicons
-    ================================================== -->
-<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="72x72"
-	href="img/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114"
-	href="img/apple-touch-icon-114x114.png">
+<title>Notice View</title>
 
-<link rel="stylesheet" type="text/css"
-	href="${R}res/css_main/bootstrap.css">
-<link rel="stylesheet" type="text/css"
-	href="${R}res/font-awesome-4.2.0_main/css/font-awesome.css">
-<link rel="stylesheet" type="text/css"
-	href="${R}res/css_main/jasny-bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="${R}res/css_main/animate.css">
-<link href="${R}res/css_main/owl.carousel.css" rel="stylesheet"
-	media="screen">
-<link href="${R}res/css_main/owl.theme.css" rel="stylesheet"
-	media="screen">
-<link rel="stylesheet" type="text/css" href="${R}res/css_main/style.css">
-<link rel="stylesheet" type="text/css"
-	href="${R}res/css_main/responsive.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link href="${R}res/css/bootstrap.min.css" rel="stylesheet">
 
-<link
-	href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Acme'
-	rel='stylesheet' type='text/css'>
+<!-- Custom fonts for this template -->
+<link href="${R}res/font-awesome/font-awesome.min.css" rel="stylesheet">
+<link href="${R}res/devicons/devicons.min.css" rel="stylesheet">
+<link href="${R}res/icons/simple-line-icons.css" rel="stylesheet">
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="${R}res/js_main/jquery.1.11.1.js"></script>
-<script type="text/javascript" src="${R}res/js_main/bootstrap.js"></script>
-<script type="text/javascript" src="${R}res/js_main/SmoothScroll.js"></script>
-<script type="text/javascript"
-	src="${R}res/js_main/jasny-bootstrap.min.js"></script>
-<script src="${R}res/js_main/owl.carousel.js"></script>
-<script src="${R}res/js_main/typed.js"></script>
-<script type="text/javascript" src="${R}res/js_main/main.js"></script>
-<script type="text/javascript" src="${R}res/js_main/notice.js"></script>
-<script type="text/javascript" src="${R}res/js_main/modernizr.custom.js"></script>
+<!-- Custom styles for this template -->
+<link href="${R}res/css/resume.min.css" rel="stylesheet">
 
 </head>
 
-<body>
-	<!--- Off Canvas Side Menu -->
-	<div class="navmenu navmenu-default navmenu-fixed-left offcanvas">
-		<div class="close" data-toggle="offcanvas" data-target=".navmenu">
-			<span class="fa fa-close"></span>
-		</div>
-		<div class="add-margin"></div>
-		<ul class="nav navmenu-nav">
-			<!--- Menu -->
-			<li style="color: orange; font-size: 14pt"><sec:authentication
-					property="user.name" /></li>
-			<li><a href="${R}user/logout_processing" class="page-scroll">로그아웃</a></li>
-			<li><a href="${R}user/index" class="page-scroll">Home</a></li>
+<body id="page-top">
+	<!-- 메뉴바 -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top"
+		id="sideNav">
+		<a class="navbar-brand js-scroll-trigger" href="#page-top"> <span
+			class="d-block d-lg-none">Mentoring</span> <span
+			class="d-none d-lg-block"> <img
+				class="img-fluid img-profile rounded-circle mx-auto mb-2"
+				src="img/profile.jpg" alt="">
+		</span>
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav">
+				<li style="color: white; font-size: 14pt"><sec:authentication
+						property="user.name" /></li>
+				<li><a href="logout_processing" class="page-scroll"><button
+							type="button" class="btn btn-outline-light btn-sm">로그아웃</button></a>
+				<hr /></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="${R}user/index">home</a></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="#experience">M2</a></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="#education">M3</a></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="#skills">M4</a></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="#interests">M5</a></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="#awards">M6</a>
+				<hr /></li>
 
-			<li><a href="${R}user/notice" class="page-scroll">공지사항</a></li>
-			<li><a href="${R}user/mentorApply" class="page-scroll">멘토 신청</a></li>
-			<li><a href="" class="page-scroll">멘티 신청</a></li>
-			<li><a href="" class="page-scroll">멘토방</a></li>
-			<li><a href="" class="page-scroll">문의사항</a></li>
-			<li><a href="" class="page-scroll">설문조사</a></li>
-			<li><a href="" class="page-scroll">My Page</a></li>
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<li class="nav-item"><a class="nav-link js-scroll-trigger"
+						data-toggle="modal" data-target="#adminModal"><button
+								type="button" class="btn btn-outline-light btn-sm">설명
+								수정</button></a></li>
+				</sec:authorize>
 
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<li><a href="" class="page-scroll">관리자 멘토방</a></li>
-				<li><a href="${R}admin/index" class="page-scroll">관리자 페이지</a></li>
-			</sec:authorize>
-			<!--- End Menu -->
-		</ul>
-	</div>
-	<!--- End Off Canvas Side Menu -->
-
-	<!-- Home Section -->
-	<div id="home">
-		<div class="container text-center">
-			<!-- Navigation -->
-			<nav id="menu" data-toggle="offcanvas" data-target=".navmenu">
-				<span class="fa fa-bars"></span>
-			</nav>
-
-			<div class="media">
-				<div class="media-body">		
-					<h2 class="media-heading">${ question.title }</h2>
-					<strong>글쓴이: ${ question.student.user.name }</strong>
-					<span><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${ question.date }" /></span>
-					<hr/>
-					
-					<div>${ question.content }</div>
-					
-					<br/><br/>
-					
-					<div class="pull-bottom">
-						<sec:authorize access="hasRole('ROLE_ADMIN')">
-							<a class="btn btn-primary" href="${R}user/questionEdit?id=${ question.id }&${ pagination.queryString }">수정</a>
-							<a class="btn btn-danger" href="${R}user/questionDelete?id=${ question.id }&${ pagination.queryString }" data-confirm-delete>삭제</a>
-						</sec:authorize>
-						<a class="btn btn-default" href="${R}user/questionList?${ pagination.queryString }">목록으로</a>
-					</div>
-					
-					<br/><br/>
-					
-					<form:form method="post" modelAttribute="questionCommentModel">
-						<form:input path="content" class="form-control" placeholder="댓글을 입력해주세요" />
-						<form:errors path="content" class="error" />
-						<a class="btn btn-success" href="${R}user/questionView">저장</a>
-					</form:form>
-					
-					<div>
-						<c:forEach var="questioncomment" items="${ comments }">
-							<span>관리자 <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${ questioncomment.date }" /></span>
-							<div>${ questioncomment.content }</div>
-						</c:forEach>
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</div>
-
-	<nav id="footer">
-		<div class="container">
-			<div class="pull-left">
-				<p>2017 © SKHU SW. All Rights Reserved.</p>
-			</div>
-			<div class="pull-right">
-				<a href="#home" class="page-scroll">Back to Top <span
-					class="fa fa-angle-up"></span></a>
-			</div>
+			</ul>
 		</div>
 	</nav>
+	<!-- 메뉴바 끝 -->
 
+	<div class="container pull-left" style="padding-top: 10%;">
+
+		<h3>${ question.title }</h3>
+		<span class="fa fa-user-circle"></span> 글쓴이: ${ question.student.user.name }<span
+			class="fa fa-clock-o"></span>
+		<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
+			value="${ question.date }" />
+		<hr />
+
+		<div class="text-center">
+			<div>${ question.content }</div>
+		</div>
+
+		<hr />
+
+
+		<div class="pull-right">
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<a class="btn btn-danger btn-sm"
+					href="${R}user/noticeDelete?id=${ question.id }&${ pagination.queryString }"
+					data-confirm-delete>삭제</a>
+			</sec:authorize>
+			<a class="btn btn-success btn-sm"
+				href="${R}user/noticeList?${ pagination.queryString }">목록으로</a>
+		</div>
+		<br />
+
+		<!-- 여기부터 -->
+
+		<div class="text-left">
+			<c:forEach var="questioncomment" items="${ questioncommentList }">
+				<b>답변</b>
+				<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
+					value="${ questioncomment.date }" />
+				<br />
+				<div>${ questioncomment.content }</div>
+				<br />
+			</c:forEach>
+
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<br />
+				<form:form method="post" modelAttribute="questioncomment">
+					<form:textarea path="content" name="content" class="form-control"
+						rows="5" id="comment"></form:textarea>
+					<br />
+
+					<div class="text-right">
+						<button class="btn btn-success btn-sm" type=submit>확인</button>
+
+					</div>
+				</form:form>
+			</sec:authorize>
+			<br />
+
+
+
+
+			<!-- 여기까지 -->
+
+
+		</div>
+
+		<!-- Bootstrap core JavaScript -->
+		<script src="${R}res/js/jquery.min.js"></script>
+		<script src="${R}res/js/bootstrap.bundle.min.js"></script>
+
+		<!-- Plugin JavaScript -->
+		<script src="${R}res/js/jquery.easing.min.js"></script>
+
+		<!-- Custom scripts for this template -->
+		<script src="${R}res/js/resume.min.js"></script>
+		<script src="${R}res/js/notice.js"></script>
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+			integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+			integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+			crossorigin="anonymous"></script>
+
+		<script src="https://use.fontawesome.com/25b35a2279.js"></script>
 </body>
+
 </html>

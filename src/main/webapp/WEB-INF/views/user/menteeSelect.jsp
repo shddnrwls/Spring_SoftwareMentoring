@@ -15,7 +15,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>관리자 멘토방 세부 정보 뷰</title>
+<title>관리자 멘토방</title>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -31,16 +31,25 @@
 <link href="${R}res/css/resume.min.css" rel="stylesheet">
 
 <style>
-body {
-	color: black;
+.mentor {
+	min-width: 200px;
+	max-width: 200px;
+	min-height: 200px;
+	max-height: 200px;
+	border-radius: 50% !important;
 }
 
-.mentor {
+.frame {
+	border: 1px solid darkgray;
+	padding: 40px 20px;
+	text-align: center;
+	/* 	opacity: 0.5;
+	transition: all 0.8s; */
 	min-width: 300px;
-	max-width: 300px;
-	min-height: 300px;
-	max-height: 300px;
-	border-radius: 50% !important;
+	max-height: 400px;
+	/* margin-bottom: 30px; */
+	color: black;
+	font-size: 24px;
 }
 </style>
 
@@ -78,9 +87,9 @@ body {
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="${R}user/mentorApply">멘토 신청</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/menteeSelect">멘티 신청</a></li>
+					href="#skills">M4</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/myMentorRoom">멘토방</a></li>
+					href="#interests">M5</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="#awards">M6</a>
 					<hr /></li>
@@ -90,12 +99,9 @@ body {
 						data-toggle="modal" data-target="#adminModal"><button
 								type="button" class="btn btn-outline-light btn-sm">설명
 								수정</button></a></li>
-					<li class="nav-item"><a class="nav-link js-scroll-trigger"
-						href="${R}admin/index"><button type="button"
-								class="btn btn-outline-light btn-sm">관리자 페이지</button></a></li>
-					<li class="nav-item"><a class="nav-link js-scroll-trigger"
-						href="${R}admin/allMentorRoom"><button type="button"
-								class="btn btn-outline-light btn-sm">관리자 멘토방</button></a></li>
+					<li><a href="${R}admin/index" class="page-scroll"><button
+								type="button" class="btn btn-outline-light btn-sm">관리자
+								페이지</button></a></li>
 				</sec:authorize>
 
 			</ul>
@@ -105,52 +111,23 @@ body {
 
 	<div class="container-fluid p-5">
 
-		<div class="text-center" style="width: 80%; margin: auto;">
-			<h3>${ mentorRoom.student.user.name }'s
-				<em>MentorRoom</em>
-			</h3>
-			<div>${ mentorRoom.student.user.email }</div>
-			<hr />
-			<img class="mentor" src="${R}res/img/2.jpg" alt="">
-			<hr />
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th scope="col">팀명</th>
-						<th scope="col">주제</th>
-						<th scope="col">학점</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>${ mentorRoom.teamName }</td>
-						<td>${ mentorRoom.subject }</td>
-						<td>${ mentorRoom.grade }</td>
-					</tr>
-				</tbody>
-			</table>
-			<hr />
-			<br />
-			<h3>스터디 목적</h3>
-			<div class="card card-body">${ mentorRoom.purpose }</div>
-			<br />
-			<hr />
-			<br />
-			<h3>스터디 내용</h3>
-			<div class="card card-body">${ mentorRoom.contents }</div>
-			<br />
-			<hr />
-			<br />
-			<h3>스터디 방법</h3>
-			<div class="card card-body">${ mentorRoom.method }</div>
-			<br />
-			<hr />
-			<br />
-			<h3>자격 증명 자료</h3>
-			<!-- 사진 이미지 자리    -->
-			<img src="${R}user/imageMentorApply?mentorApplyId=${mentorApply.id}"
-				class="img-responsive" width="30%;" height="30%;"
-				style="border-radius: 5px;">
+		<div class="text-center">
+
+			<div class="row">
+				<c:forEach var="mentorRoom" items="${ mentorList }">
+					<div class="col-sm">
+						<div class="frame">
+							<a href="${R}admin/menteeSelectRoom/${ mentorRoom.id }"
+								style="cursor: pointer"> <img class="mentor"
+								src="${R}res/img/2.jpg" alt="">
+							</a>
+							<p></p>
+							<p>${ mentorRoom.student.user.name }</p>
+							<p>${ mentorRoom.subject }</p>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
 		</div>
 
 	</div>

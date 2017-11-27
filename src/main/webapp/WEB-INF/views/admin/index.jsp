@@ -258,95 +258,26 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td><label class="form-check-label"> <input
-									class="form-check-input" type="checkbox" id="inlineCheckbox1"
-									value="">
-							</label></td>
-							<td scope="row">170901</td>
-							<td>201100000</td>
-							<td>조민국</td>
-							<td>3</td>
-							<td>소프트웨어공학과</td>
-							<td>
-								<button type="submit" class="btn btn-primary btn-sm">▼</button>
-							</td>
-						</tr>
-						<tr>
-							<td><label class="form-check-label"> <input
-									class="form-check-input" type="checkbox" id="inlineCheckbox1"
-									value="">
-							</label></td>
-							<td scope="row">170908</td>
-							<td>201100000</td>
-							<td>조민국</td>
-							<td>3</td>
-							<td>소프트웨어공학과</td>
-							<td>
-								<button type="submit" class="btn btn-primary btn-sm">▼</button>
-							</td>
-						</tr>
-						<tr>
-							<td><label class="form-check-label"> <input
-									class="form-check-input" type="checkbox" id="inlineCheckbox1"
-									value="">
-							</label></td>
-							<td scope="row">170908</td>
-							<td>201200000</td>
-							<td>최인혁</td>
-							<td>3</td>
-							<td>소프트웨어공학과</td>
-							<td>
-								<button type="submit" class="btn btn-primary btn-sm">▼</button>
-							</td>
-						</tr>
-						<tr>
-							<td><label class="form-check-label"> <input
-									class="form-check-input" type="checkbox" id="inlineCheckbox1"
-									value="">
-							</label></td>
-							<td scope="row">170908</td>
-							<td>201200000</td>
-							<td>이종석</td>
-							<td>3</td>
-							<td>소프트웨어공학과</td>
-							<td>
-								<button type="submit" class="btn btn-primary btn-sm">▼</button>
-							</td>
-						</tr>
-						<tr>
-							<td><label class="form-check-label"> <input
-									class="form-check-input" type="checkbox" id="inlineCheckbox1"
-									value="">
-							</label></td>
-							<td scope="row">170915</td>
-							<td>201200000</td>
-							<td>이종석</td>
-							<td>3</td>
-							<td>소프트웨어공학과</td>
-							<td>
-								<button type="submit" class="btn btn-primary btn-sm">▼</button>
-							</td>
-						</tr>
-						<tr>
-							<td><label class="form-check-label"> <input
-									class="form-check-input" type="checkbox" id="inlineCheckbox1"
-									value="">
-							</label></td>
-							<td scope="row">170922</td>
-							<td>201200000</td>
-							<td>최인혁</td>
-							<td>3</td>
-							<td>소프트웨어공학과</td>
-							<td>
-								<button type="submit" class="btn btn-primary btn-sm">▼</button>
-							</td>
-						</tr>
+						<c:forEach var="report" items="${ reportList }">
+							<tr>
+								<td><label class="form-check-label"> <input
+										class="form-check-input" type="checkbox" id="inlineCheckbox1"
+										value="">
+										<td>${ report.week }</td>
+										<td>${ report.mentorRoom.student.user.userId }</td>
+										<td>${ report.mentorRoom.student.user.name }</td>
+										<td>${ report.mentorRoom.student.grade }</td>
+										<td>${ report.mentorRoom.student.department.depName }</td>
+										<td><a href="${R}admin/excelView/${report.id}"><button
+													type="submit" class="btn btn-primary btn-sm">▼</button></a></td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 
 				<div class="pull-right">
-					<button type="submit" class="btn btn-success">선택 항목 다운로드</button>
+					<a href="${R}admin/excelView"><button type="submit"
+							class="btn btn-success">선택 항목 다운로드</button></a>
 				</div>
 
 			</div>
@@ -963,7 +894,8 @@
 					<tbody>
 						<c:forEach var="mentorApply" items="${ mentorList }">
 							<tr>
-								<td><a href="${R}admin/mentorApply/${mentorApply.id}"> ${ mentorApply.student.user.name }</a></td>
+								<td><a href="${R}admin/mentorApply/${mentorApply.id}">
+										${ mentorApply.student.user.name }</a></td>
 								<td><a href="${R}admin/success/${mentorApply.id}"><button
 											type="button" class="btn btn-primary" id="success">승인</button></a>
 									<a href="${R}admin/delete/${mentorApply.id}"><button

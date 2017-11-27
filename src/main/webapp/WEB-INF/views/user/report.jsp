@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <c:url var="R" value="/" />
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +16,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>관리자 멘토방</title>
+<title>User Index</title>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -29,29 +30,6 @@
 
 <!-- Custom styles for this template -->
 <link href="${R}res/css/resume.min.css" rel="stylesheet">
-
-<style>
-.mentor {
-	min-width: 200px;
-	max-width: 200px;
-	min-height: 200px;
-	max-height: 200px;
-	border-radius: 50% !important;
-}
-
-.frame {
-	border: 1px solid darkgray;
-	padding: 40px 20px;
-	text-align: center;
-	/* 	opacity: 0.5;
-	transition: all 0.8s; */
-	min-width: 300px;
-	max-height: 400px;
-	/* margin-bottom: 30px; */
-	color: black;
-	font-size: 24px;
-}
-</style>
 
 </head>
 
@@ -85,7 +63,7 @@
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="${R}user/noticeList">공지사항</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/mentorApply">멘토 신청</a></li>
+					href="#education">M3</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="#skills">M4</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
@@ -109,53 +87,82 @@
 	</nav>
 	<!-- 메뉴바 끝 -->
 
-	<div class="container-fluid p-5">
+	<div class="container-fluid p-0">
 
-		<div class="text-center">
+		<div align="center" style="padding: 10%;">
+			<div style="width: 55%">
+				<h2>보고서 제출</h2>
+				<hr />
 
-			<div class="row">
-				<c:forEach var="mentorRoom" items="${ mentorList }">
-					<div class="col-sm">
-						<div class="frame">
-							<a href="${R}admin/adminMentorRoom/${ mentorRoom.id }"
-								style="cursor: pointer"> <img class="mentor"
-								src="${R}res/img/2.jpg" alt="">
-							</a>
-							<p></p>
-							<p>${ mentorRoom.student.user.name }</p>
-							<p>${ mentorRoom.subject }</p>
+
+				<form:form method="post" modelAttribute="report">
+					<form style="padding: 10%;">
+						<div class="form-group">
+							<label for="exampleFormControlSelect1" style="float: left;">스터디
+								날짜</label> <br />
+							<form:select path="week" name="week" class="form-control"
+								id="month">
+								<option>1주차</option>
+								<option>2주차</option>
+								<option>3주차</option>
+								<option>4주차</option>
+								<option>5주차</option>
+								<option>6주차</option>
+								<option>7주차</option>
+								<option>8주차</option>
+								<option>9주차</option>
+								<option>10주차</option>
+								<option>11주차</option>
+								<option>12주차</option>
+								<option>13주차</option>
+								<option>14주차</option>
+								<option>15주차</option>
+							</form:select>
 						</div>
-					</div>
-				</c:forEach>
+						<br />
+
+						<div class="form-group">
+							<label class="form-control-label" for="formGroupExampleInput"
+								style="float: left;">모임 장소</label>
+							<form:input path="place" name="place" class="form-control"
+								id="formGroupExampleInput" placeholder="" />
+						</div>
+						<div class="form-group">
+							<label class="form-control-label" for="formGroupExampleInput"
+								style="float: left;">주요 내용</label>
+							<form:textarea path="contents" name="contents"
+								class="form-control" rows="5" id="comment"></form:textarea>
+						</div>
+
+						<span class="min-chart" id="chart-sales" data-percent="56"><span
+							class="percent"></span></span>
+
+
+						<div class="form-group">
+							<label for="exampleFormControlFile1" style="float: left;">스터디
+								증명 사진</label> <br /> <input type="file" class="form-control-file"
+								id="exampleFormControlFile1">
+						</div>
+
+
+						<div class="btn-group" role="group" aria-label="Basic example"
+							style="padding-bottom: 20%">
+							<button type="submit" class="btn btn-secondary"
+								style="color: black">확인</button>
+							<button type="button" class="btn btn-secondary"
+								style="color: black">초기화</button>
+							<button type="button" class="btn btn-secondary"
+								style="color: black; cursor: pointer"
+								onClick="location.href='url'">취소</button>
+						</div>
+
+
+					</form>
+				</form:form>
+
 			</div>
 		</div>
-
 	</div>
 
-	<!-- Bootstrap core JavaScript -->
-	<script src="${R}res/js/jquery.min.js"></script>
-	<script src="${R}res/js/bootstrap.bundle.min.js"></script>
-
-	<!-- Plugin JavaScript -->
-	<script src="${R}res/js/jquery.easing.min.js"></script>
-
-	<!-- Custom scripts for this template -->
-	<script src="${R}res/js/resume.min.js"></script>
-
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-		integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-		integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-		crossorigin="anonymous"></script>
-
-	<script src="https://use.fontawesome.com/25b35a2279.js"></script>
-
 </body>
-
 </html>

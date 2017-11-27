@@ -88,11 +88,12 @@
 
 	<div class="container-fluid p-0">
 
-		<div align="center" style="padding: 10%;">
+		<div align="center" style="padding: 5%;">
 			<div style="width: 55%">
 				<h2>멘토 신청</h2>
 				<hr />
-				<form:form method="post" modelAttribute="mentorApply">
+				<form:form method="post" modelAttribute="mentorApply"
+					enctype="multipart/form-data">
 					<fieldset disabled>
 						<div class="form-group">
 							<label for="disabledTextInput" style="float: left;">이름</label>
@@ -194,9 +195,8 @@
 
 					<div class="form-group">
 						<label for="exampleFormControlFile1" style="float: left;">자격
-							증명 업로드</label>
-						<form:input path="file" name="file" type="file"
-							class="form-control-file" id="exampleFormControlFile1" />
+							증명 업로드</label> <input type="file" name="fileUpload"
+							class="form-control-file" multiple> <br />
 					</div>
 
 					<div class="btn-group" role="group" aria-label="Basic example">

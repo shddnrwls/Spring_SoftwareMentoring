@@ -2,6 +2,7 @@ package net.skhu.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import net.skhu.dto.Adminoption;
 import net.skhu.dto.MentorApply;
 import net.skhu.dto.MentorRoom;
+import net.skhu.dto.Report;
+import net.skhu.dto.Team;
 import net.skhu.dto.User;
 import net.skhu.model.Pagination;
 import net.skhu.repository.AdminoptionRepository;
@@ -24,9 +27,12 @@ import net.skhu.repository.EmployeeRepository;
 import net.skhu.repository.MentorApplyRepository;
 import net.skhu.repository.MentorRoomRepository;
 import net.skhu.repository.ProfessorRepository;
+import net.skhu.repository.ReportRepository;
 import net.skhu.repository.StudentRepository;
+import net.skhu.repository.TeamRepository;
 import net.skhu.repository.UserRepository;
 import net.skhu.service.TaskService;
+import net.skhu.util.WriteReportToExcelFile;
 
 @Controller
 @RequestMapping("admin")
@@ -48,6 +54,10 @@ public class AdminController {
 	UserRepository userRepository;
 	@Autowired
 	TaskService taskService;
+	@Autowired
+	TeamRepository teamRepository;
+	@Autowired
+	ReportRepository reportRepository;
 
 	@RequestMapping("index")
 	public String list(Model model, Pagination pagination) {
@@ -57,6 +67,7 @@ public class AdminController {
 		List<MentorApply> mentorList = mentorApplyRepository.findAll();
 		Adminoption optionList = adminOptionRepository.findOne(1);
 		List<User> userList = userRepository.findAll(pagination);
+		List<Report> reportList = reportRepository.findAll();
 
 		// model.addAttribute("stdList", stdList);
 		// model.addAttribute("profList", profList);
@@ -66,6 +77,7 @@ public class AdminController {
 		model.addAttribute("optionList", optionList);
 		model.addAttribute("orderBy", UserRepository.orderBy);
 		model.addAttribute("searchBy", UserRepository.searchBy);
+		model.addAttribute("reportList", reportList);
 
 		// 다시 int형으로 되어있던것을 text형태로 만들어주는 코드.
 		if (pagination.getSb() == 3)
@@ -157,6 +169,8 @@ public class AdminController {
 	public String mentorRoom(Model model, @PathVariable int id) {
 
 		MentorRoom mentorRoom = mentorRoomRepository.findOne(id);
+		List<Team> teamList = teamRepository.findBymentorRoomId(id);
+		model.addAttribute("teamList", teamList);
 		model.addAttribute("mentorRoom", mentorRoom);
 
 		return "admin/adminMentorRoom";
@@ -167,6 +181,7 @@ public class AdminController {
 
 		MentorApply mentorApply = mentorApplyRepository.findOne(id);
 		MentorRoom mentorRoom = new MentorRoom();
+		Team team = new Team();
 
 		mentorRoom.setBankName(mentorApply.getBankName());
 		mentorRoom.setAccountNum(mentorApply.getAccountNum());
@@ -180,13 +195,17 @@ public class AdminController {
 		mentorRoom.setTeamName(mentorApply.getTeamName());
 		mentorRoom.setTime(mentorApply.getTime());
 		mentorRoom.setSubject(mentorApply.getSubject());
+		team.setStudent(mentorApply.getStudent());
 
 		model.addAttribute("mentorApply", mentorApply);
 		model.addAttribute("mentorRoom", mentorRoom);
-
 		mentorRoomRepository.save(mentorRoom);
 		mentorApplyRepository.delete(mentorApply);
 
+		team.setMentorRoomId(mentorRoom.getId());
+		team.setAthority(2);
+		model.addAttribute("team", team);
+		teamRepository.save(team);
 		return "redirect:/admin/index";
 	}
 
@@ -196,6 +215,23 @@ public class AdminController {
 		model.addAttribute("mentorApply", mentorApply);
 		mentorApplyRepository.delete(mentorApply);
 		return "redirect:/admin/index";
+	}
+
+	@RequestMapping(value = "mentorroomdelete/{id}", method = RequestMethod.GET)
+	public String metorroomdelete(Model model, @PathVariable int id) {
+		MentorRoom mentorRoom = mentorRoomRepository.findOne(id);
+
+		model.addAttribute("mentorApply", mentorRoom);
+		mentorRoomRepository.delete(mentorRoom);
+		return "redirect:/admin/mentorRoom";
+	}
+
+	@RequestMapping(value = "teamdelete/{id}", method = RequestMethod.GET)
+	public String deleteTeam(Model model, @PathVariable int id) {
+		Team team = teamRepository.findOne(id);
+		model.addAttribute("team", team);
+		teamRepository.delete(team);
+		return "redirect:/admin/allMentorRoom";
 	}
 
 	@RequestMapping("changeAuthority")
@@ -235,6 +271,33 @@ public class AdminController {
 		// FileUtils.delete(destFile.getAbsolutePath());
 		return "redirect:/admin/index";
 
+	}
+
+	@RequestMapping("excelView/{id}")
+	public String excelView(Model model, @PathVariable int id) throws Exception {
+		System.out.println("농욱진");
+
+		Report report = reportRepository.findOne(id);
+		List<Report> reportList = new ArrayList<>();
+
+		reportList.add(report);
+
+		WriteReportToExcelFile.writeReportToFile(
+				report.getMentorRoom().getStudent().getUser().getUserId() + "_" + report.getWeek() + "_report.xlsx",
+				reportList);
+
+		return "redirect:/admin/index";
+	}
+
+	@RequestMapping("excelView")
+	public String excelView(Model model) throws Exception {
+		System.out.println("농욱진");
+
+		List<Report> reportList = reportRepository.findAll();
+
+		WriteReportToExcelFile.writeAllReportToFile("all_report.xlsx", reportList);
+
+		return "redirect:/admin/index";
 	}
 
 }

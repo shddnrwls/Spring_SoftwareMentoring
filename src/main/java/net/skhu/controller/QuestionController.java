@@ -1,5 +1,7 @@
 package net.skhu.controller;
 
+import java.util.Date;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -13,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import net.skhu.dto.QuestionComment;
 import net.skhu.model.Pagination;
-import net.skhu.model.QuestionCommentModel;
 import net.skhu.model.QuestionModel;
 import net.skhu.repository.QuestionCommentRepository;
+import net.skhu.repository.QuestionRepository;
 import net.skhu.repository.StudentRepository;
 import net.skhu.service.QuestionService;
 import net.skhu.service.UserService;
@@ -24,84 +26,98 @@ import net.skhu.service.UserService;
 @RequestMapping("user")
 public class QuestionController {
 
-	@Autowired QuestionService questionService;
-	@Autowired StudentRepository studentRepository;
-	@Autowired QuestionCommentRepository questionCommentRepository;
+	@Autowired
+	QuestionService questionService;
+	@Autowired
+	StudentRepository studentRepository;
+	@Autowired
+	QuestionCommentRepository questionCommentRepository;
+	@Autowired
+	QuestionRepository questionRepository;
 
-    @RequestMapping("questionList")
-    public String list(Pagination pagination, Model model) {
-        model.addAttribute("list", questionService.findAll(pagination));
-        model.addAttribute("orderBy", questionService.getOrderByOptions());
-        model.addAttribute("searchBy", questionService.getSearchByOptions());
+	@RequestMapping("questionList")
+	public String list(Pagination pagination, Model model) {
+		model.addAttribute("list", questionService.findAll(pagination));
+		model.addAttribute("orderBy", questionService.getOrderByOptions());
+		model.addAttribute("searchBy", questionService.getSearchByOptions());
 
-        return "user/questionList";
-    }
+		return "user/questionList";
+	}
 
-    @RequestMapping(value="questionView", method=RequestMethod.GET)
-    public String view(@RequestParam("id") int id, Model model, Pagination pagination) {
+	@RequestMapping(value = "questionView", method = RequestMethod.GET)
+	public String view(@RequestParam("id") int id, Model model, Pagination pagination) {
 
-        model.addAttribute("question", questionService.findOne(id));
-        model.addAttribute("comments", questionCommentRepository.findAll());
-        model.addAttribute("questionCommentModel", new QuestionCommentModel());
-        model.addAttribute("user", UserService.getCurrentUser());
+		QuestionComment questionComment = new QuestionComment();
 
-        return "user/questionView";
-    }
+		model.addAttribute("question", questionService.findOne(id));
+		model.addAttribute("questioncommentList", questionCommentRepository.findByQuestionId(id));
 
-    @RequestMapping(value="questionView", method=RequestMethod.POST)
-    public String view(@RequestParam("id") int id, Model model, @Valid QuestionCommentModel a, BindingResult bindingResult, Pagination pagination){
+		model.addAttribute("questioncomment", questionComment);
+		model.addAttribute("user", UserService.getCurrentUser());
 
-    	if(bindingResult.hasErrors()) {
-    		return "user/questionView";
-    	}
-    	QuestionComment c = new QuestionComment();
-    	c.setContent(a.getContent());
-    	// c.setQuestion(questionService.findOne(id));
-    	questionCommentRepository.save(c);
+		return "user/questionView";
+	}
 
-    	return "redirect:questionView?id=" + id + "&" + pagination.getQueryString();
-    }
+	@RequestMapping(value = "questionView", method = RequestMethod.POST)
+	public String view(@RequestParam("id") int id, Model model, QuestionComment questionComment,
+			BindingResult bindingResult, Pagination pagination) {
 
-    // 작성자, 관리자만 수정 삭제 가능하게 해야함
-    @RequestMapping(value="questionEdit", method=RequestMethod.GET)
-    public String edit(@RequestParam("id") int id, Pagination pagination, Model model) {
-    	model.addAttribute("user", UserService.getCurrentUser());
-        model.addAttribute("questionModel", questionService.findOne(id));
-        return "user/questionEdit";
-    }
+		if (bindingResult.hasErrors()) {
+			return "user/questionView";
+		}
 
-    @Transactional
-    @RequestMapping(value="questionEdit", method=RequestMethod.POST)
-    public String edit(Pagination pagination, Model model, @Valid QuestionModel a, BindingResult bindingResult) {
+		QuestionComment newComment = new QuestionComment();
+		String temp = questionComment.getContent();
+		temp = temp.replace("\r\n", "<br/>");
+		newComment.setContent(temp);
+		newComment.setQuestion(questionRepository.findOne(id));
+		newComment.setDate(new Date());
 
-        if (bindingResult.hasErrors()) {
-            return "user/questionEdit";
-        }
-        questionService.update(a, UserService.getCurrentUser().getId());
-        return "redirect:questionView?id=" + a.getId() + "&" + pagination.getQueryString();
-    }
+		questionCommentRepository.save(newComment);
 
-    @RequestMapping(value="questionCreate", method=RequestMethod.GET)
-    public String create(Pagination pagination, Model model) {
-    	model.addAttribute("user", UserService.getCurrentUser());
-        model.addAttribute("questionModel", new QuestionModel());
-        return "user/questionEdit";
-    }
+		return "redirect:questionView?id=" + id + "&" + pagination.getQueryString();
+	}
 
-    @Transactional
-    @RequestMapping(value="questionCreate", method=RequestMethod.POST)
-    public String create(@Valid QuestionModel a, BindingResult bindingResult, Pagination pagination, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "user/questionEdit";
-        }
-        int id = questionService.insertQuestion(a, UserService.getCurrentUser().getId());
-        return "redirect:questionView?id=" + id + "&" + pagination.getQueryString();
-    }
+	// 작성자, 관리자만 수정 삭제 가능하게 해야함
+	@RequestMapping(value = "questionEdit", method = RequestMethod.GET)
+	public String edit(@RequestParam("id") int id, Pagination pagination, Model model) {
+		model.addAttribute("user", UserService.getCurrentUser());
+		model.addAttribute("questionModel", questionService.findOne(id));
+		return "user/questionEdit";
+	}
 
-    @RequestMapping(value="questionDelete", method=RequestMethod.GET)
-    public String delete(@RequestParam("id") int id, Pagination pagination, Model model){
-    	questionService.delete(id);
-    	return "redirect:questionList?"+pagination.getQueryString();
-    }
+	@Transactional
+	@RequestMapping(value = "questionEdit", method = RequestMethod.POST)
+	public String edit(Pagination pagination, Model model, @Valid QuestionModel a, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			return "user/questionEdit";
+		}
+		questionService.update(a, UserService.getCurrentUser().getId());
+		return "redirect:questionView?id=" + a.getId() + "&" + pagination.getQueryString();
+	}
+
+	@RequestMapping(value = "questionCreate", method = RequestMethod.GET)
+	public String create(Pagination pagination, Model model) {
+		model.addAttribute("user", UserService.getCurrentUser());
+		model.addAttribute("questionModel", new QuestionModel());
+		return "user/questionEdit";
+	}
+
+	@Transactional
+	@RequestMapping(value = "questionCreate", method = RequestMethod.POST)
+	public String create(@Valid QuestionModel a, BindingResult bindingResult, Pagination pagination, Model model) {
+		if (bindingResult.hasErrors()) {
+			return "user/questionEdit";
+		}
+		int id = questionService.insertQuestion(a, UserService.getCurrentUser().getId());
+		return "redirect:questionView?id=" + id + "&" + pagination.getQueryString();
+	}
+
+	@RequestMapping(value = "questionDelete", method = RequestMethod.GET)
+	public String delete(@RequestParam("id") int id, Pagination pagination, Model model) {
+		questionService.delete(id);
+		return "redirect:questionList?" + pagination.getQueryString();
+	}
 
 }

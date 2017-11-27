@@ -87,9 +87,6 @@
 							<span class="fa fa-pencil"></span> 멘토 자격
 						</h3>
 						<hr />
-						<%
-							pageContext.setAttribute("newLineChar", "\r\n");
-						%>
 						<p>${fn:replace(manage_main.contents1, newLineChar, "<br/>")}</p>
 					</div>
 				</div>
