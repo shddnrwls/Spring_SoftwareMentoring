@@ -6,150 +6,96 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <c:url var="R" value="/" />
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>문의 사항 수정</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- Favicons
-    ================================================== -->
-<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="72x72"
-	href="img/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114"
-	href="img/apple-touch-icon-114x114.png">
+<title>Question Edit</title>
 
-<link rel="stylesheet" type="text/css"
-	href="${R}res/css_main/bootstrap.css">
-<link rel="stylesheet" type="text/css"
-	href="${R}res/font-awesome-4.2.0_main/css/font-awesome.css">
-<link rel="stylesheet" type="text/css"
-	href="${R}res/css_main/jasny-bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="${R}res/css_main/animate.css">
-<link href="${R}res/css_main/owl.carousel.css" rel="stylesheet"
-	media="screen">
-<link href="${R}res/css_main/owl.theme.css" rel="stylesheet"
-	media="screen">
-<link rel="stylesheet" type="text/css" href="${R}res/css_main/style.css">
-<link rel="stylesheet" type="text/css"
-	href="${R}res/css_main/responsive.css">
-<link rel="stylesheet" type="text/css"
-	href="${R}res/summernote/summernote.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<!-- Bootstrap core CSS -->
+<link href="${R}res/css/bootstrap.min.css" rel="stylesheet">
 
+<!-- Custom fonts for this template -->
+<link href="${R}res/font-awesome/font-awesome.min.css" rel="stylesheet">
+<link href="${R}res/devicons/devicons.min.css" rel="stylesheet">
+<link href="${R}res/icons/simple-line-icons.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="${R}res/css/resume.min.css" rel="stylesheet">
 
 <link
-	href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Acme'
-	rel='stylesheet' type='text/css'>
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="${R}res/js_main/jquery.1.11.1.js"></script>
-<script type="text/javascript" src="${R}res/js_main/bootstrap.js"></script>
-<script type="text/javascript" src="${R}res/js_main/SmoothScroll.js"></script>
-<script type="text/javascript"
-	src="${R}res/js_main/jasny-bootstrap.min.js"></script>
-<script src="${R}res/js_main/owl.carousel.js"></script>
-<script src="${R}res/js_main/typed.js"></script>
-<script type="text/javascript" src="${R}res/js_main/main.js"></script>
-<script type="text/javascript" src="${R}res/js_main/modernizr.custom.js"></script>
-<script src="${R}res/summernote/summernote.js"></script>
-<script type="text/javascript" src="${R}res/js_main/notice.js"></script>
+	href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.css"
+	rel="stylesheet">
 
 </head>
 
-<body>
-	<!--- Off Canvas Side Menu -->
-	<div class="navmenu navmenu-default navmenu-fixed-left offcanvas">
-		<div class="close" data-toggle="offcanvas" data-target=".navmenu">
-			<span class="fa fa-close"></span>
+<body id="page-top">
+	<!-- 메뉴바 -->
+	<tiles:insertAttribute name="menu" />
+	<div class="container text-center"
+		style="padding-top: 10%; padding-bottom: 10%;">
+
+		<form:form method="post" modelAttribute="questionModel">
+
+			<form:input path="title" class="form-control"
+				placeholder="제목을 입력해주세요." />
+			<form:errors path="title" class="error" />
+
+			<br />
+
+			<div id="summernote">${ questionModel.content }</div>
+			<form:errors path="content" class="error" />
+			<input type="hidden" name="content" />
+
+		</form:form>
+
+		<br /> <br />
+
+		<div id="buttons">
+			<a class="btn btn-success" onclick="save()">저장</a> <a
+				class="btn btn-default"
+				href="${R}user/questionList?${ pagination.queryString }">목록으로</a>
 		</div>
-		<div class="add-margin"></div>
-		<ul class="nav navmenu-nav">
-			<!--- Menu -->
-			<li style="color: orange; font-size: 14pt"><sec:authentication
-					property="user.name" /></li>
-			<li><a href="${R}user/logout_processing" class="page-scroll">로그아웃</a></li>
-			<li><a href="${R}user/index" class="page-scroll">Home</a></li>
 
-			<li><a href="${R}user/notice" class="page-scroll">공지사항</a></li>
-			<li><a href="${R}user/mentorApply" class="page-scroll">멘토 신청</a></li>
-			<li><a href="" class="page-scroll">멘티 신청</a></li>
-			<li><a href="" class="page-scroll">멘토방</a></li>
-			<li><a href="" class="page-scroll">문의사항</a></li>
-			<li><a href="" class="page-scroll">설문조사</a></li>
-			<li><a href="" class="page-scroll">My Page</a></li>
-
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<li><a href="" class="page-scroll">관리자 멘토방</a></li>
-				<li><a href="${R}admin/index" class="page-scroll">관리자 페이지</a></li>
-			</sec:authorize>
-			<!--- End Menu -->
-		</ul>
-	</div>
-	<!--- End Off Canvas Side Menu -->
-
-	<!-- Home Section -->
-	<div id="home">
-		<div class="container text-center">
-			<!-- Navigation -->
-			<nav id="menu" data-toggle="offcanvas" data-target=".navmenu">
-				<span class="fa fa-bars"></span>
-			</nav>
-
-			<div class="content">
-				<h2>${ question.title }</h2>
-				<hr />
-				<form:form method="post" modelAttribute="questionModel">
-				
-					<form:input path="title" class="form-control" placeholder="제목을 입력해주세요."/>
-					<form:errors path="title" class="error" />
-					
-					<br />
-					
-					<div id="summernote">${ questionModel.content }</div>
-					<form:errors path="content" class="error" />
-					<input type="hidden" name="content" />
-					
-				</form:form>
-
-				<br />
-				<br />
-
-				<div id="buttons">
-					<a class="btn btn-success" onclick="save()">저장</a> <a
-						class="btn btn-default"
-						href="${R}user/questionList?${ pagination.queryString }">목록으로</a>
-				</div>
-
-				<br />
-				<br />
-
-			</div>
-		</div>
 	</div>
 
-	<nav id="footer">
-		<div class="container">
-			<div class="pull-left">
-				<p>2017 © SKHU SW. All Rights Reserved.</p>
-			</div>
-			<div class="pull-right">
-				<a href="#home" class="page-scroll">Back to Top <span
-					class="fa fa-angle-up"></span></a>
-			</div>
-		</div>
-	</nav>
+	<!-- Bootstrap core JavaScript -->
+	<script src="${R}res/js/jquery.min.js"></script>
+	<script src="${R}res/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Plugin JavaScript -->
+	<script src="${R}res/js/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for this template -->
+	<script src="${R}res/js/resume.min.js"></script>
+	<script src="${R}res/js/notice.js"></script>
+
+	<script src="https://use.fontawesome.com/25b35a2279.js"></script>
+
+	<!-- include summernote css/js-->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.js"></script>
 
 	<script>
-		$('#summernote').summernote({
-			height : 300
+		$(document).ready(function() {
+			$('#summernote').summernote({
+				height : 500
+			});
 		});
 		function save() {
 			var s = $('#summernote').summernote('code');
@@ -159,4 +105,6 @@
 	</script>
 
 </body>
+
 </html>
+

@@ -5,6 +5,7 @@
 	prefix="sec"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <c:url var="R" value="/" />
 
 <!DOCTYPE html>
@@ -37,52 +38,8 @@
 
 <body id="page-top">
 	<!-- 메뉴바 -->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top"
-		id="sideNav">
-		<a class="navbar-brand js-scroll-trigger" href="#page-top"> <span
-			class="d-block d-lg-none">Mentoring</span> <span
-			class="d-none d-lg-block"> <img
-				class="img-fluid img-profile rounded-circle mx-auto mb-2"
-				src="img/profile.jpg" alt="">
-		</span>
-		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav">
-				<li style="color: white; font-size: 14pt"><sec:authentication
-						property="user.name" /></li>
-				<li><a href="logout_processing" class="page-scroll"><button
-							type="button" class="btn btn-outline-light">로그아웃</button></a>
-					<hr /></li>
-
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/index">home</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/noticeList">공지사항</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#education">M3</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#skills">M4</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#interests">M5</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#awards">M6</a>
-					<hr /></li>
-
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
-
-				</sec:authorize>
-
-			</ul>
-		</div>
-	</nav>
-	<!-- 메뉴바 끝 -->
-
+	<tiles:insertAttribute name="menu" />
+	
 	<div class="container-fluid p-5">
 
 		<ul class="nav nav-tabs">

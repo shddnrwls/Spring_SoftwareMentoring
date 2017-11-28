@@ -28,7 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/mentor/**").access("hasRole('ROLE_MENTOR') and hasRole('ROLE_ADMIN')")
 			.antMatchers("/guest/**").permitAll()															// /guest/** 패턴의 url은 모든 사용자 허용
 			.antMatchers("/").permitAll()																	// / url은 모든 사용자 허용
-			.antMatchers("/**").authenticated();															// /** 패턴의 url은 로그인된 사용자만 허용
+			.antMatchers("/**").authenticated();
+		// /** 패턴의 url은 로그인된 사용자만 허용
 
 		http.csrf().disable();		// CSRF 공격 검사를 하지 않겠다는 설정. (나중에 해야함)
 
@@ -42,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.passwordParameter("passwd");
 
 		// ( (logout() ) 로그아웃 설정 시작
-		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/user/logout_processing"))
+		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout_processing"))
 					 .logoutSuccessUrl("/guest/index")
 					 .invalidateHttpSession(true);		// 로그아웃할 때 Session에 들어있는 데이터를 전부 지우라는 설정
 

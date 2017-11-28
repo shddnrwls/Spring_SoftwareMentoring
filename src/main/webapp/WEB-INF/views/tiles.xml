@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+     "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+     "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<!-- views/user -->
+	<definition name="user/index" template="/WEB-INF/views/user/index.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+
+	<definition name="user/menteeSelect" template="/WEB-INF/views/user/menteeSelect.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+
+	<definition name="user/menteeSelectRoom" template="/WEB-INF/views/user/menteeSelectRoom.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+
+	<definition name="user/mentorApply" template="/WEB-INF/views/user/mentorApply.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+
+	<definition name="user/myMentorRoom" template="/WEB-INF/views/user/myMentorRoom.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+
+	<definition name="user/myPageEmployee" template="/WEB-INF/views/user/myPageEmployee.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="user/myPageProfessor" template="/WEB-INF/views/user/myPageProfessor.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="user/myPageStudent" template="/WEB-INF/views/user/myPageStudent.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="user/noticeList" template="/WEB-INF/views/user/noticeList.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="user/noticeView" template="/WEB-INF/views/user/noticeView.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="user/questionEdit" template="/WEB-INF/views/user/questionEdit.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="user/questionList" template="/WEB-INF/views/user/questionList.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="user/questionView" template="/WEB-INF/views/user/questionView.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="user/report" template="/WEB-INF/views/user/report.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<!-- views/admin -->
+	<definition name="admin/adminMentorRoom" template="/WEB-INF/views/admin/adminMentorRoom.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="admin/allMentorRoom" template="/WEB-INF/views/admin/allMentorRoom.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="admin/index" template="/WEB-INF/views/admin/index.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="admin/mentorApply" template="/WEB-INF/views/admin/mentorApply.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+	<definition name="admin/noticeEdit" template="/WEB-INF/views/admin/noticeEdit.jsp">
+		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+	</definition>
+	
+</tiles-definitions>

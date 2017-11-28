@@ -4,6 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <c:url var="R" value="/" />
 
 <!DOCTYPE html>
@@ -15,7 +16,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>관리자 멘토방</title>
+<title>멘티 신청</title>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -56,58 +57,9 @@
 </head>
 
 <body id="page-top">
+
 	<!-- 메뉴바 -->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top"
-		id="sideNav">
-		<a class="navbar-brand js-scroll-trigger" href="#page-top"> <span
-			class="d-block d-lg-none">Mentoring</span> <span
-			class="d-none d-lg-block"> <img
-				class="img-fluid img-profile rounded-circle mx-auto mb-2"
-				src="img/profile.jpg" alt="">
-		</span>
-		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav">
-				<li style="color: white; font-size: 14pt"><sec:authentication
-						property="user.name" /></li>
-				<li><a href="logout_processing" class="page-scroll"><button
-							type="button" class="btn btn-outline-light btn-sm">로그아웃</button></a>
-					<hr /></li>
-
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/index">home</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/noticeList">공지사항</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/mentorApply">멘토 신청</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#skills">M4</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#interests">M5</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#awards">M6</a>
-					<hr /></li>
-
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<li class="nav-item"><a class="nav-link js-scroll-trigger"
-						data-toggle="modal" data-target="#adminModal"><button
-								type="button" class="btn btn-outline-light btn-sm">설명
-								수정</button></a></li>
-					<li><a href="${R}admin/index" class="page-scroll"><button
-								type="button" class="btn btn-outline-light btn-sm">관리자
-								페이지</button></a></li>
-				</sec:authorize>
-
-			</ul>
-		</div>
-	</nav>
-	<!-- 메뉴바 끝 -->
+	<tiles:insertAttribute name="menu" />
 
 	<div class="container-fluid p-5">
 
@@ -119,7 +71,8 @@
 						<div class="frame">
 							<a href="${R}user/menteeSelectRoom/${ mentorRoom.id }"
 								style="cursor: pointer"> <img class="mentor"
-								src="${R}res/img/2.jpg" alt="">
+								src="image?userId=${ mentorRoom.student.user.id }"
+								alt="이미지가 없습니다.">
 							</a>
 							<p></p>
 							<p>${ mentorRoom.student.user.name }</p>
