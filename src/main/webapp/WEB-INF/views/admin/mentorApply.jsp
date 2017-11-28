@@ -15,7 +15,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>관리자 멘토방 세부 정보 뷰</title>
+<title>멘토 승인 전 보는 뷰</title>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -106,10 +106,10 @@ body {
 	<div class="container-fluid p-5">
 
 		<div class="text-center" style="width: 80%; margin: auto;">
-			<h3>${ mentorRoom.student.user.name }'s
+			<h3>${ mentorApply.student.user.name }'s
 				<em>MentorRoom</em>
 			</h3>
-			<div>${ mentorRoom.student.user.email }</div>
+			<div>${ mentorApply.student.user.email }</div>
 			<hr />
 			<img class="mentor" src="${R}res/img/2.jpg" alt="">
 			<hr />
@@ -123,34 +123,29 @@ body {
 				</thead>
 				<tbody>
 					<tr>
-						<td>${ mentorRoom.teamName }</td>
-						<td>${ mentorRoom.subject }</td>
-						<td>${ mentorRoom.grade }</td>
+						<td>${ mentorApply.teamName }</td>
+						<td>${ mentorApply.subject }</td>
+						<td>${ mentorApply.grade }</td>
 					</tr>
 				</tbody>
 			</table>
 			<hr />
 			<br />
 			<h3>스터디 목적</h3>
-			<div class="card card-body">${ mentorRoom.purpose }</div>
+			<div class="card card-body">${ mentorApply.purpose }</div>
 			<br />
 			<hr />
 			<br />
 			<h3>스터디 내용</h3>
-			<div class="card card-body">${ mentorRoom.contents }</div>
+			<div class="card card-body">${ mentorApply.contents }</div>
 			<br />
 			<hr />
 			<br />
 			<h3>스터디 방법</h3>
-			<div class="card card-body">${ mentorRoom.method }</div>
+			<div class="card card-body">${ mentorApply.method }</div>
 			<br />
 			<hr />
 			<br />
-			<h3>자격 증명 자료</h3>
-			<!-- 사진 이미지 자리    -->
-			<img src="${R}user/imageMentorApply?mentorApplyId=${mentorApply.id}"
-				class="img-responsive" width="30%;" height="30%;"
-				style="border-radius: 5px;">
 		</div>
 
 	</div>

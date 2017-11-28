@@ -177,9 +177,9 @@ body {
 			<hr />
 			<br />
 		</div>
-		<div class="pull-right">
+		<div class="text-center">
 			<a href="${R}admin/mentorroomdelete/${mentorRoom.id}"><button
-					type="button" class="btn btn-primary" id="delete">삭제</button> </a>
+					type="button" class="btn btn-danger" id="delete">삭제</button> </a>
 		</div>
 
 	</div>
@@ -207,15 +207,6 @@ body {
 		crossorigin="anonymous"></script>
 
 	<script src="https://use.fontawesome.com/25b35a2279.js"></script>
-
-	<script>
-		$(function() {
-			$('a.btn btn-primary').click(function(e) {
-				e.preventDefault()
-				$(this).collapse('hide')
-			})
-		}
-	</script>
 
 </body>
 

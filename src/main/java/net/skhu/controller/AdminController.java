@@ -223,7 +223,7 @@ public class AdminController {
 
 		model.addAttribute("mentorApply", mentorRoom);
 		mentorRoomRepository.delete(mentorRoom);
-		return "redirect:/admin/mentorRoom";
+		return "redirect:/admin/allMentorRoom";
 	}
 
 	@RequestMapping(value = "teamdelete/{id}", method = RequestMethod.GET)

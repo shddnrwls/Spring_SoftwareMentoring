@@ -219,15 +219,17 @@ public class UserController {
 	@RequestMapping(value = "myMentorRoom", method = RequestMethod.GET)
 	public String single(Model model) {
 		Principal principal = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("***************아아1");
 		Student student = studentRepository.findByUserUserId(principal.getName());
 		Team team = teamRepository.findByStudent(student);
 		model.addAttribute("team", team);
-
+		System.out.println("***************아아2");
 		List<Team> teamList = teamRepository.findBymentorRoomId(team.getMentorRoomId());
 		model.addAttribute("teamList", teamList);
-
+		System.out.println("***************아아3");
 		MentorRoom mentorRoom = mentorRoomRepository.findOne(team.getMentorRoomId());
 		model.addAttribute("mentorRoom", mentorRoom);
+		System.out.println("***************아아4");
 		return "user/myMentorRoom";
 	}
 
@@ -303,8 +305,10 @@ public class UserController {
 	public String myPage(Model model, Professor professor, User user,
 			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
 			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
+
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
-		imageFileRepository.delete(oldImageFile);
+		if (oldImageFile != null)
+			imageFileRepository.delete(oldImageFile);
 
 		for (MultipartFile uploadFile : uploadFiles) {
 			if (uploadFile.getSize() <= 0)
@@ -324,9 +328,9 @@ public class UserController {
 			user.setPassword(newPassword);
 		System.out.println(user);
 		userRepository.save(user);
-		// professorRepository.save(professor);
+		//professorRepository.save(professor);
 
-		return "redirect:index";
+		return "redirect:myPage";
 	}
 
 	@RequestMapping(value = "myPageEmployee", method = RequestMethod.POST)
@@ -334,7 +338,8 @@ public class UserController {
 			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
 			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
-		imageFileRepository.delete(oldImageFile);
+		if (oldImageFile != null)
+			imageFileRepository.delete(oldImageFile);
 
 		for (MultipartFile uploadFile : uploadFiles) {
 			if (uploadFile.getSize() <= 0)
@@ -355,7 +360,7 @@ public class UserController {
 		userRepository.save(user);
 		// employeeRepository.save(employee);
 
-		return "redirect:index";
+		return "redirect:myPage";
 	}
 
 	@RequestMapping("image")

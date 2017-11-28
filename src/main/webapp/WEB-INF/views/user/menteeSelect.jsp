@@ -117,7 +117,7 @@
 				<c:forEach var="mentorRoom" items="${ mentorList }">
 					<div class="col-sm">
 						<div class="frame">
-							<a href="${R}admin/menteeSelectRoom/${ mentorRoom.id }"
+							<a href="${R}user/menteeSelectRoom/${ mentorRoom.id }"
 								style="cursor: pointer"> <img class="mentor"
 								src="${R}res/img/2.jpg" alt="">
 							</a>
