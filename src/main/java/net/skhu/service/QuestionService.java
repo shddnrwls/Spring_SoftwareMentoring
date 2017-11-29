@@ -23,7 +23,7 @@ public class QuestionService {
 	}
 
 	public List<Question> findAll(Pagination pagination){
-		return questionRepository.findAll();
+		return questionRepository.findAll(pagination);
 	}
 
 	public void update(QuestionModel a, int userId){

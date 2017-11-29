@@ -35,10 +35,14 @@
 				href="${R}user/index">home</a></li>
 			<li class="nav-item"><a class="nav-link js-scroll-trigger"
 				href="${R}user/noticeList">공지사항</a></li>
-			<li class="nav-item"><a class="nav-link js-scroll-trigger"
-				href="${R}user/mentorApply">멘토 신청</a></li>
-			<li class="nav-item"><a class="nav-link js-scroll-trigger"
-				href="${R}user/menteeSelect">멘티 신청</a></li>
+			<c:if test="${ optionList.mentorActive == 'on' }">
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="${R}user/mentorApply">멘토 신청</a></li>
+			</c:if>
+			<c:if test="${ optionList.menteeActive == 'on' }">
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="${R}user/menteeSelect">멘티 신청</a></li>
+			</c:if>
 			<li class="nav-item"><a class="nav-link js-scroll-trigger"
 				href="${R}user/myMentorRoom">멘토방</a></li>
 			<li class="nav-item"><a class="nav-link js-scroll-trigger"
@@ -48,9 +52,6 @@
 				<hr /></li>
 
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					data-toggle="modal" data-target="#adminModal"><button
-							type="button" class="btn btn-outline-light btn-sm">설명 수정</button></a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="${R}admin/index"><button type="button"
 							class="btn btn-outline-light btn-sm">관리자 페이지</button></a></li>
