@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import net.skhu.dto.Adminoption;
 import net.skhu.dto.QuestionComment;
 import net.skhu.model.Pagination;
 import net.skhu.model.QuestionModel;
+import net.skhu.repository.AdminoptionRepository;
 import net.skhu.repository.QuestionCommentRepository;
 import net.skhu.repository.QuestionRepository;
 import net.skhu.repository.StudentRepository;
@@ -34,12 +36,17 @@ public class QuestionController {
 	QuestionCommentRepository questionCommentRepository;
 	@Autowired
 	QuestionRepository questionRepository;
+	@Autowired
+	AdminoptionRepository adminOptionRepository;
 
 	@RequestMapping("questionList")
 	public String list(Pagination pagination, Model model) {
 		model.addAttribute("list", questionService.findAll(pagination));
 		model.addAttribute("orderBy", questionService.getOrderByOptions());
 		model.addAttribute("searchBy", questionService.getSearchByOptions());
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
 
 		return "user/questionList";
 	}
@@ -54,6 +61,9 @@ public class QuestionController {
 
 		model.addAttribute("questioncomment", questionComment);
 		model.addAttribute("user", UserService.getCurrentUser());
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
 
 		return "user/questionView";
 	}
@@ -83,6 +93,10 @@ public class QuestionController {
 	public String edit(@RequestParam("id") int id, Pagination pagination, Model model) {
 		model.addAttribute("user", UserService.getCurrentUser());
 		model.addAttribute("questionModel", questionService.findOne(id));
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
+
 		return "user/questionEdit";
 	}
 
@@ -101,6 +115,10 @@ public class QuestionController {
 	public String create(Pagination pagination, Model model) {
 		model.addAttribute("user", UserService.getCurrentUser());
 		model.addAttribute("questionModel", new QuestionModel());
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
+
 		return "user/questionEdit";
 	}
 

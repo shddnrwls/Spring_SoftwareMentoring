@@ -64,14 +64,15 @@ public class AdminController {
 		// List<Student> stdList = studentRepository.findAll();
 		// List<Professor> profList = professorRepository.findAll();
 		// List<Employee> empList = employeeRepository.findAll();
+		// model.addAttribute("stdList", stdList);
+		// model.addAttribute("profList", profList);
+		// model.addAttribute("empList", empList);
+
 		List<MentorApply> mentorList = mentorApplyRepository.findAll();
 		Adminoption optionList = adminOptionRepository.findOne(1);
 		List<User> userList = userRepository.findAll(pagination);
 		List<Report> reportList = reportRepository.findAll();
 
-		// model.addAttribute("stdList", stdList);
-		// model.addAttribute("profList", profList);
-		// model.addAttribute("empList", empList);
 		model.addAttribute("userList", userList);
 		model.addAttribute("mentorList", mentorList);
 		model.addAttribute("optionList", optionList);
@@ -120,9 +121,7 @@ public class AdminController {
 		for (String userId : deleteUserIds)
 			userRepository.delete(Integer.parseInt(userId));
 
-		String url = "redirect:/admin/index?" + pagination.getQueryString();
-
-		return url;
+		return "redirect:index?" + pagination.getQueryString();
 	}
 
 	@RequestMapping(value = "index", method = RequestMethod.POST)
@@ -144,13 +143,16 @@ public class AdminController {
 		Adminoption optionList = adminOptionRepository.findOne(1);
 		model.addAttribute("optionList", optionList);
 
-		return "redirect:/admin/index";
+		return "redirect:index";
 	}
 
 	@RequestMapping("allMentorRoom")
 	public String mentorRoom(Model model) {
 		List<MentorRoom> mentorList = mentorRoomRepository.findAll();
 		model.addAttribute("mentorList", mentorList);
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
 
 		return "admin/allMentorRoom";
 	}
@@ -159,8 +161,10 @@ public class AdminController {
 	public String mentorApply(Model model, @PathVariable int id) {
 
 		MentorApply mentorApply = mentorApplyRepository.findOne(id);
-
 		model.addAttribute("mentorApply", mentorApply);
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
 
 		return "admin/mentorApply";
 	}
@@ -172,6 +176,9 @@ public class AdminController {
 		List<Team> teamList = teamRepository.findBymentorRoomId(id);
 		model.addAttribute("teamList", teamList);
 		model.addAttribute("mentorRoom", mentorRoom);
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
 
 		return "admin/adminMentorRoom";
 	}
@@ -206,32 +213,37 @@ public class AdminController {
 		team.setAthority(2);
 		model.addAttribute("team", team);
 		teamRepository.save(team);
-		return "redirect:/admin/index";
+
+		return "redirect:index";
 	}
 
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
 	public String delete(Model model, @PathVariable int id) {
+
 		MentorApply mentorApply = mentorApplyRepository.findOne(id);
 		model.addAttribute("mentorApply", mentorApply);
 		mentorApplyRepository.delete(mentorApply);
-		return "redirect:/admin/index";
+
+		return "redirect:index";
 	}
 
-	@RequestMapping(value = "mentorroomdelete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "mentorRoomDelete/{id}", method = RequestMethod.GET)
 	public String metorroomdelete(Model model, @PathVariable int id) {
 		MentorRoom mentorRoom = mentorRoomRepository.findOne(id);
-
 		model.addAttribute("mentorApply", mentorRoom);
 		mentorRoomRepository.delete(mentorRoom);
+
 		return "redirect:/admin/allMentorRoom";
 	}
 
-	@RequestMapping(value = "teamdelete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "teamDelete/{id}", method = RequestMethod.GET)
 	public String deleteTeam(Model model, @PathVariable int id) {
 		Team team = teamRepository.findOne(id);
 		model.addAttribute("team", team);
 		teamRepository.delete(team);
-		return "redirect:/admin/allMentorRoom";
+
+		return "redirect:/admin/adminMentorRoom/" + team.getMentorRoomId();
+//		return "redirect:allMentorRoom";
 	}
 
 	@RequestMapping("changeAuthority")
@@ -241,7 +253,7 @@ public class AdminController {
 		User user = userRepository.findOne(userId);
 		user.setAuthority(authority);
 		userRepository.save(user);
-		return "redirect:/admin/index?pg=" + pg + "&ob=" + ob + "&sb=" + sb + "&st=" + st;
+		return "redirect:index?pg=" + pg + "&ob=" + ob + "&sb=" + sb + "&st=" + st;
 	}
 
 	/* excel view 로 뽑기 */

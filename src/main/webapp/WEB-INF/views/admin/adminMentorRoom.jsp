@@ -103,7 +103,7 @@ body {
 							<td>권한</td>
 							<td>${ team.student.user.phoneNumber }</td>
 							<td>${team.student.user.email }</td>
-							<td><a href="${R}admin/teamdelete/${team.id}">삭제 </a></td>
+							<td><a href="${R}admin/teamDelete/${team.id}">삭제 </a></td>
 
 						</tr>
 					</c:forEach>
@@ -128,7 +128,7 @@ body {
 			<br />
 		</div>
 		<div class="text-center">
-			<a href="${R}admin/mentorroomdelete/${mentorRoom.id}"><button
+			<a href="${R}admin/mentorRoomDelete/${mentorRoom.id}"><button
 					type="button" class="btn btn-danger" id="delete">삭제</button> </a>
 		</div>
 

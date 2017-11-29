@@ -5,10 +5,6 @@
 <tiles-definitions>
 
 	<!-- views/user -->
-	<definition name="user/index" template="/WEB-INF/views/user/index.jsp">
-		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
-	</definition>
-
 	<definition name="user/menteeSelect" template="/WEB-INF/views/user/menteeSelect.jsp">
 		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
 	</definition>

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import net.skhu.dto.Adminoption;
 import net.skhu.dto.Department;
 import net.skhu.dto.Employee;
 import net.skhu.dto.ImageFile;
@@ -33,6 +34,7 @@ import net.skhu.dto.Report;
 import net.skhu.dto.Student;
 import net.skhu.dto.Team;
 import net.skhu.dto.User;
+import net.skhu.repository.AdminoptionRepository;
 import net.skhu.repository.DepartmentRepository;
 import net.skhu.repository.EmployeeRepository;
 import net.skhu.repository.ImageFileRepository;
@@ -77,6 +79,49 @@ public class UserController {
 	EmployeeRepository employeeRepository;
 	@Autowired
 	ReportRepository reportRepository;
+	@Autowired
+	AdminoptionRepository adminOptionRepository;
+
+	@RequestMapping("index")
+	public String index(Model model) {
+		// 메인 페이지 설명 부분 불러오기 위함
+		Manage_main manage_main = manage_mainRepository.findOne(1);
+		manage_main.setContents1(brToEnter(manage_main.getContents1()));
+		manage_main.setContents2(brToEnter(manage_main.getContents2()));
+		manage_main.setContents3(brToEnter(manage_main.getContents3()));
+		manage_main.setContents4(brToEnter(manage_main.getContents4()));
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("manage_main", manage_main);
+		model.addAttribute("optionList", optionList);
+
+		return "user/index";
+	}
+
+	public String enterToBr(String enter) {
+		String temp = enter;
+		temp = temp.replace("\r\n", "<br/>");
+
+		return temp;
+	}
+
+	public String brToEnter(String enter) {
+		String temp = enter;
+		temp = temp.replace("<br/>", "\r\n");
+
+		return temp;
+	}
+
+	@RequestMapping(value = "index", method = RequestMethod.POST)
+	public String index(Model model, Manage_main manage_main) {
+		manage_main.setId(1);
+		manage_main.setContents1(enterToBr(manage_main.getContents1()));
+		manage_main.setContents2(enterToBr(manage_main.getContents2()));
+		manage_main.setContents3(enterToBr(manage_main.getContents3()));
+		manage_main.setContents4(enterToBr(manage_main.getContents4()));
+		manage_mainRepository.save(manage_main);
+
+		return "redirect:index";
+	}
 
 	@RequestMapping(value = "mentorApply", method = RequestMethod.GET)
 	public String mentorApply(Model model) {
@@ -90,13 +135,18 @@ public class UserController {
 		model.addAttribute("mentorApply", mentorApply);
 		model.addAttribute("principal", principal);
 
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
+
 		return "user/mentorApply";
 	}
 
 	@RequestMapping(value = "mentorApply", method = RequestMethod.POST)
 	public String mentorApply(Model model, MentorApply mentorApply, Principal principal,
 			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
+
 		LicenseFile oldLicenseFile = licenseFileRepository.findByMentorApplyId(mentorApply.getId());
+
 		if (oldLicenseFile != null)
 			licenseFileRepository.delete(oldLicenseFile);
 
@@ -124,71 +174,14 @@ public class UserController {
 		return "redirect:index";
 	}
 
-	@RequestMapping("index")
-	public String index(Model model) {
-		// 메인 페이지 설명 부분 불러오기 위함
-		Manage_main manage_main = manage_mainRepository.findOne(1);
-		manage_main.setContents1(brToEnter(manage_main.getContents1()));
-		manage_main.setContents2(brToEnter(manage_main.getContents2()));
-		manage_main.setContents3(brToEnter(manage_main.getContents3()));
-		manage_main.setContents4(brToEnter(manage_main.getContents4()));
-		model.addAttribute("manage_main", manage_main);
-
-		return "user/index";
-	}
-
-	public String enterToBr(String enter) {
-		String temp = enter;
-		temp = temp.replace("\r\n", "<br/>");
-
-		return temp;
-	}
-
-	public String brToEnter(String enter) {
-		String temp = enter;
-		temp = temp.replace("<br/>", "\r\n");
-
-		return temp;
-	}
-
-	@RequestMapping(value = "index", method = RequestMethod.POST)
-	public String index(Model model, Manage_main manage_main) {
-
-		manage_main.setId(1);
-		manage_main.setContents1(enterToBr(manage_main.getContents1())); // 콘텐츠
-																			// 1의
-																			// 개행문자를
-																			// <br>로
-																			// 바꾸어
-																			// 저장
-		manage_main.setContents2(enterToBr(manage_main.getContents2())); // 콘텐츠
-																			// 2의
-																			// 개행문자를
-																			// <br>로
-																			// 바꾸어
-																			// 저장
-		manage_main.setContents3(enterToBr(manage_main.getContents3())); // 콘텐츠
-																			// 3의
-																			// 개행문자를
-																			// <br>로
-																			// 바꾸어
-																			// 저장
-		manage_main.setContents4(enterToBr(manage_main.getContents4())); // 콘텐츠
-																			// 4의
-																			// 개행문자를
-																			// <br>로
-																			// 바꾸어
-																			// 저장
-
-		manage_mainRepository.save(manage_main);
-
-		return "user/index";
-	}
-
 	@RequestMapping("menteeSelect")
 	public String mentorRoom(Model model) {
 		List<MentorRoom> mentorList = mentorRoomRepository.findAll();
 		model.addAttribute("mentorList", mentorList);
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
+
 		return "user/menteeSelect";
 	}
 
@@ -199,6 +192,10 @@ public class UserController {
 		List<Team> teamList = teamRepository.findBymentorRoomId(id);
 		model.addAttribute("teamList", teamList);
 		model.addAttribute("mentorRoom", mentorRoom);
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
+
 		return "user/menteeSelectRoom";
 	}
 
@@ -212,24 +209,28 @@ public class UserController {
 
 		model.addAttribute("team", team);
 		teamRepository.save(team);
-		return "redirect:/user/index";
+
+		return "redirect:/user/myMentorRoom";
 
 	}
 
 	@RequestMapping(value = "myMentorRoom", method = RequestMethod.GET)
 	public String single(Model model) {
 		Principal principal = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("***************아아1");
 		Student student = studentRepository.findByUserUserId(principal.getName());
+
 		Team team = teamRepository.findByStudent(student);
 		model.addAttribute("team", team);
-		System.out.println("***************아아2");
+
 		List<Team> teamList = teamRepository.findBymentorRoomId(team.getMentorRoomId());
 		model.addAttribute("teamList", teamList);
-		System.out.println("***************아아3");
+
 		MentorRoom mentorRoom = mentorRoomRepository.findOne(team.getMentorRoomId());
 		model.addAttribute("mentorRoom", mentorRoom);
-		System.out.println("***************아아4");
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
+
 		return "user/myMentorRoom";
 	}
 
@@ -237,6 +238,7 @@ public class UserController {
 	public String myPage(Model model) {
 		Principal principal = SecurityContextHolder.getContext().getAuthentication();
 		String userId = principal.getName();
+
 		User user = userRepository.findOneByUserId(userId);
 		List<Department> departments;
 		Student student;
@@ -246,19 +248,25 @@ public class UserController {
 		model.addAttribute("user", user);
 		model.addAttribute("principal", principal);
 
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
+
 		if (user.getJob().equals("1")) {
 			student = studentRepository.findByUserUserId(userId);
 			departments = departmentRepository.findAll();
 			model.addAttribute("departments", departments);
 			model.addAttribute("student", student);
+
 			return "user/myPageStudent";
 		} else if (user.getJob().equals("2")) {
 			professor = professorRepository.findByUserUserId(userId);
 			model.addAttribute("professor", professor);
+
 			return "user/myPageProfessor";
 		} else {
 			employee = employeeRepository.findByUserUserId(userId);
 			model.addAttribute("employee", employee);
+
 			return "user/myPageEmployee";
 		}
 
@@ -269,13 +277,11 @@ public class UserController {
 			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
 			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
 
-		System.out.println("**********************야이시발");
-
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
+
 		if (oldImageFile != null)
 			imageFileRepository.delete(oldImageFile);
 
-		System.out.println("*********************나는 포문이다.");
 		for (MultipartFile uploadFile : uploadFiles) {
 			if (uploadFile.getSize() <= 0)
 				continue;
@@ -289,8 +295,6 @@ public class UserController {
 			imageFileRepository.save(imageFile);
 
 		}
-
-		System.out.println("********************포문 끝났당");
 
 		if (!newPassword.equals("0"))
 			user.setPassword(newPassword);
@@ -307,6 +311,7 @@ public class UserController {
 			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
 
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
+
 		if (oldImageFile != null)
 			imageFileRepository.delete(oldImageFile);
 
@@ -328,7 +333,7 @@ public class UserController {
 			user.setPassword(newPassword);
 		System.out.println(user);
 		userRepository.save(user);
-		//professorRepository.save(professor);
+		// professorRepository.save(professor);
 
 		return "redirect:myPage";
 	}
@@ -337,7 +342,9 @@ public class UserController {
 	public String myPage(Model model, Employee employee, User user,
 			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
 			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
+
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
+
 		if (oldImageFile != null)
 			imageFileRepository.delete(oldImageFile);
 
@@ -399,6 +406,9 @@ public class UserController {
 
 		Report report = new Report();
 		model.addAttribute("report", report);
+
+		Adminoption optionList = adminOptionRepository.findOne(1);
+		model.addAttribute("optionList", optionList);
 
 		return "user/report";
 	}
