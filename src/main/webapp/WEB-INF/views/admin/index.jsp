@@ -112,10 +112,10 @@
 									<td>${ user.phoneNumber }</td>
 									<td><input type="radio" name="${user.id}" value="1"
 										onclick="changeRadio('${user.id}', '1', '${user.authority}', '${ pagination.queryString }');"
-										${ user.authority == 1 ? "checked=checked" : "" }>멘토 <input
+										${ user.authority == 1 ? "checked=checked" : "" }>멘티 <input
 										type="radio" name="${user.id}" value="2"
 										onclick="changeRadio('${user.id}', '2', '${user.authority}', '${ pagination.queryString }');"
-										${ user.authority == 2 ? "checked=checked" : "" }>멘티 <input
+										${ user.authority == 2 ? "checked=checked" : "" }>멘토 <input
 										type="radio" name="${user.id}" value="3"
 										onclick="changeRadio('${user.id}', '3', '${user.authority}', '${ pagination.queryString }');"
 										${ user.authority == 3 ? "checked=checked" : "" }>관리자
