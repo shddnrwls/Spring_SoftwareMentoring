@@ -103,7 +103,6 @@ public class QuestionController {
 	@Transactional
 	@RequestMapping(value = "questionEdit", method = RequestMethod.POST)
 	public String edit(Pagination pagination, Model model, @Valid QuestionModel a, BindingResult bindingResult) {
-
 		if (bindingResult.hasErrors()) {
 			return "user/questionEdit";
 		}

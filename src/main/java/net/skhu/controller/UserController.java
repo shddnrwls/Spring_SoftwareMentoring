@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -84,6 +83,7 @@ public class UserController {
 
 	@RequestMapping("index")
 	public String index(Model model) {
+
 		Principal principal = SecurityContextHolder.getContext().getAuthentication();
 		String userId = principal.getName();
 		User user = userRepository.findOneByUserId(userId);
@@ -131,14 +131,12 @@ public class UserController {
 	public String enterToBr(String enter) {
 		String temp = enter;
 		temp = temp.replace("\r\n", "<br/>");
-
 		return temp;
 	}
 
 	public String brToEnter(String enter) {
 		String temp = enter;
 		temp = temp.replace("<br/>", "\r\n");
-
 		return temp;
 	}
 
@@ -207,12 +205,12 @@ public class UserController {
 
 	@RequestMapping("menteeSelect")
 	public String mentorRoom(Model model) {
+
 		List<MentorRoom> mentorList = mentorRoomRepository.findAll();
-		model.addAttribute("mentorList", mentorList);
-
 		Adminoption optionList = adminOptionRepository.findOne(1);
-		model.addAttribute("optionList", optionList);
 
+		model.addAttribute("mentorList", mentorList);
+		model.addAttribute("optionList", optionList);
 		return "user/menteeSelect";
 	}
 
@@ -221,19 +219,20 @@ public class UserController {
 
 		MentorRoom mentorRoom = mentorRoomRepository.findOne(id);
 		List<Team> teamList = teamRepository.findBymentorRoomId(id);
-		model.addAttribute("teamList", teamList);
-		model.addAttribute("mentorRoom", mentorRoom);
-
 		Adminoption optionList = adminOptionRepository.findOne(1);
-		model.addAttribute("optionList", optionList);
 
+		model.addAttribute("mentorRoom", mentorRoom);
+		model.addAttribute("teamList", teamList);
+		model.addAttribute("optionList", optionList);
 		return "user/menteeSelectRoom";
 	}
 
 	@RequestMapping(value = "selectTeam/{id}", method = RequestMethod.GET)
 	public String delete(Model model, @PathVariable int id) {
+
 		Principal principal = SecurityContextHolder.getContext().getAuthentication();
 		Student student = studentRepository.findByUserUserId(principal.getName());
+
 		Team team = new Team();
 		team.setStudent(student);
 		team.setMentorRoomId(id);
@@ -247,6 +246,7 @@ public class UserController {
 
 	@RequestMapping(value = "myMentorRoom", method = RequestMethod.GET)
 	public String single(Model model) {
+
 		Principal principal = SecurityContextHolder.getContext().getAuthentication();
 		Student student = studentRepository.findByUserUserId(principal.getName());
 
@@ -267,14 +267,10 @@ public class UserController {
 
 	@RequestMapping(value = "myPage", method = RequestMethod.GET)
 	public String myPage(Model model) {
+
 		Principal principal = SecurityContextHolder.getContext().getAuthentication();
 		String userId = principal.getName();
-
 		User user = userRepository.findOneByUserId(userId);
-		List<Department> departments;
-		Student student;
-		Professor professor;
-		Employee employee;
 
 		model.addAttribute("user", user);
 		model.addAttribute("principal", principal);
@@ -283,22 +279,25 @@ public class UserController {
 		model.addAttribute("optionList", optionList);
 
 		if (user.getJob().equals("1")) {
-			student = studentRepository.findByUserUserId(userId);
-			departments = departmentRepository.findAll();
+
+			Student student = studentRepository.findByUserUserId(userId);
+			List<Department> departments = departmentRepository.findAll();
 			model.addAttribute("departments", departments);
 			model.addAttribute("student", student);
-
 			return "user/myPageStudent";
+
 		} else if (user.getJob().equals("2")) {
-			professor = professorRepository.findByUserUserId(userId);
+
+			Professor professor = professorRepository.findByUserUserId(userId);
 			model.addAttribute("professor", professor);
-
 			return "user/myPageProfessor";
-		} else {
-			employee = employeeRepository.findByUserUserId(userId);
-			model.addAttribute("employee", employee);
 
+		} else {
+
+			Employee employee = employeeRepository.findByUserUserId(userId);
+			model.addAttribute("employee", employee);
 			return "user/myPageEmployee";
+
 		}
 
 	}
@@ -445,27 +444,21 @@ public class UserController {
 
 	@RequestMapping(value = "report", method = RequestMethod.POST)
 	public String report(Model model, Report report) {
+
 		Principal principal = SecurityContextHolder.getContext().getAuthentication();
 		Student student = studentRepository.findByUserUserId(principal.getName());
-
 		MentorRoom mentorRoom = mentorRoomRepository.findByStudentId(student.getId());
 
-		// 여기부턴 중복검사
-		List<Report> listReport = new ArrayList<Report>();
-		if ((listReport = reportRepository.findByWeek(report.getWeek())) != null) { // 만약
-																					// 같은
-																					// 주차의
-																					// report들이
-																					// 있다면
-			for (Report data : listReport) {
-				if (data.getMentorRoom().getId() == mentorRoom.getId()) // 그 중
-																		// mentorRoomId가
-																		// 같은 놈이
-																		// 있다면
-					return "user/already"; // 경고창 띄움
-			}
-		}
-
+		/*
+		 * 여기부턴 중복검사
+		 * 만약 같은 주차의 report가 있다면
+		 */
+		List<Report> listReport = reportRepository.findByWeek(report.getWeek());
+		if(listReport != null)
+			for(Report data : listReport)
+				// 그 중 mentorRoomId가 같은 것이 있다면
+				if(data.getMentorRoom().getId() == mentorRoom.getId())
+					return "user/already";
 		// 여기까지
 
 		report.setMentorRoom(mentorRoom);

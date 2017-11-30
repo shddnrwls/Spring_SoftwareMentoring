@@ -229,6 +229,7 @@ public class AdminController {
 
 	@RequestMapping(value = "mentorRoomDelete/{id}", method = RequestMethod.GET)
 	public String metorroomdelete(Model model, @PathVariable int id) {
+
 		MentorRoom mentorRoom = mentorRoomRepository.findOne(id);
 		model.addAttribute("mentorApply", mentorRoom);
 		mentorRoomRepository.delete(mentorRoom);
@@ -238,27 +239,30 @@ public class AdminController {
 
 	@RequestMapping(value = "teamDelete/{id}", method = RequestMethod.GET)
 	public String deleteTeam(Model model, @PathVariable int id) {
+
 		Team team = teamRepository.findOne(id);
 		model.addAttribute("team", team);
 		teamRepository.delete(team);
 
 		return "redirect:/admin/adminMentorRoom/" + team.getMentorRoomId();
-//		return "redirect:allMentorRoom";
 	}
 
 	@RequestMapping("changeAuthority")
 	public String changeAuthority(Model model, @RequestParam("userId") int userId,
 			@RequestParam("authority") String authority, @RequestParam("pg") String pg, @RequestParam("ob") String ob,
 			@RequestParam("sb") String sb, @RequestParam("st") String st) {
+
 		User user = userRepository.findOne(userId);
 		user.setAuthority(authority);
 		userRepository.save(user);
+
 		return "redirect:index?pg=" + pg + "&ob=" + ob + "&sb=" + sb + "&st=" + st;
 	}
 
 	/* excel view 로 뽑기 */
 	@RequestMapping(value = "excelUpload", method = RequestMethod.POST)
 	public String excelUpload(Model model, MultipartHttpServletRequest request) throws Exception {
+
 		MultipartFile excelFile = request.getFile("excelFile");
 		System.out.println("엑셀 파일 업로드 컨트롤러");
 		if (excelFile == null || excelFile.isEmpty()) {
