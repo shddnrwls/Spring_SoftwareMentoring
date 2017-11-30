@@ -37,7 +37,7 @@
 
 <body id="page-top">
 	<!-- 메뉴바 -->
-<tiles:insertAttribute name="menu" />
+	<tiles:insertAttribute name="menu" />
 
 	<div class="container pull-left" style="padding-top: 10%;">
 
@@ -88,7 +88,7 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
 		integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
 		crossorigin="anonymous"></script>
-	
+
 	<script src="https://use.fontawesome.com/25b35a2279.js"></script>
 
 </body>

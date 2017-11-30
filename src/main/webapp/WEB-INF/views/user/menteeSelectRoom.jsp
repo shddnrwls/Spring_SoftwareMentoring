@@ -31,17 +31,12 @@
 <!-- Custom styles for this template -->
 <link href="${R}res/css/resume.min.css" rel="stylesheet">
 
+<!-- 우리가 만든 CSS -->
+<link href="${R}res/css/imgShape.css" rel="stylesheet">
+
 <style>
 body {
 	color: black;
-}
-
-.mentor {
-	min-width: 300px;
-	max-width: 300px;
-	min-height: 300px;
-	max-height: 300px;
-	border-radius: 50% !important;
 }
 </style>
 

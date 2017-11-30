@@ -31,15 +31,10 @@
 <!-- Custom styles for this template -->
 <link href="${R}res/css/resume.min.css" rel="stylesheet">
 
-<style>
-.mentor {
-	min-width: 200px;
-	max-width: 200px;
-	min-height: 200px;
-	max-height: 200px;
-	border-radius: 50% !important;
-}
+<!-- 우리가 만든 CSS -->
+<link href="${R}res/css/imgShape.css" rel="stylesheet">
 
+<style>
 .frame {
 	border: 1px solid darkgray;
 	padding: 40px 20px;

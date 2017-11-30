@@ -94,14 +94,6 @@
 		<br />
 	</div>
 
-
-
-
-	<!-- 여기까지 -->
-
-
-	</div>
-
 	<!-- Bootstrap core JavaScript -->
 	<script src="${R}res/js/jquery.min.js"></script>
 	<script src="${R}res/js/bootstrap.bundle.min.js"></script>
