@@ -84,17 +84,48 @@ public class UserController {
 
 	@RequestMapping("index")
 	public String index(Model model) {
-		// 메인 페이지 설명 부분 불러오기 위함
-		Manage_main manage_main = manage_mainRepository.findOne(1);
-		manage_main.setContents1(brToEnter(manage_main.getContents1()));
-		manage_main.setContents2(brToEnter(manage_main.getContents2()));
-		manage_main.setContents3(brToEnter(manage_main.getContents3()));
-		manage_main.setContents4(brToEnter(manage_main.getContents4()));
+		Principal principal = SecurityContextHolder.getContext().getAuthentication();
+		String userId = principal.getName();
+		User user = userRepository.findOneByUserId(userId);
+
+		model.addAttribute("user", user);
+		model.addAttribute("principal", principal);
+
 		Adminoption optionList = adminOptionRepository.findOne(1);
-		model.addAttribute("manage_main", manage_main);
 		model.addAttribute("optionList", optionList);
 
-		return "user/index";
+		if(user.getPassword().equals("1234")){
+			if(user.getJob().equals("1")){
+				Student student = studentRepository.findByUserUserId(userId);
+				List<Department> departments = departmentRepository.findAll();
+				model.addAttribute("student", student);
+				model.addAttribute("departments", departments);
+
+				return "user/myPageStudent";
+			}
+			else if(user.getJob().equals("2")){
+				Professor professor = professorRepository.findByUserUserId(userId);
+				model.addAttribute("professor", professor);
+
+				return "user/myPageProfessor";
+			}
+			else{
+				Employee employee = employeeRepository.findByUserUserId(userId);
+				model.addAttribute("employee", employee);
+
+				return "user/myPageEmployee";
+			}
+		}
+		else{
+			Manage_main manage_main = manage_mainRepository.findOne(1);
+			manage_main.setContents1(brToEnter(manage_main.getContents1()));
+			manage_main.setContents2(brToEnter(manage_main.getContents2()));
+			manage_main.setContents3(brToEnter(manage_main.getContents3()));
+			manage_main.setContents4(brToEnter(manage_main.getContents4()));
+			model.addAttribute("manage_main", manage_main);
+
+			return "user/index";
+		}
 	}
 
 	public String enterToBr(String enter) {
@@ -293,7 +324,6 @@ public class UserController {
 			imageFile.setData(uploadFile.getBytes());
 			imageFile.setUser(user);
 			imageFileRepository.save(imageFile);
-
 		}
 
 		if (!newPassword.equals("0"))
@@ -302,7 +332,7 @@ public class UserController {
 		userRepository.save(user);
 		// studentRepository.save(professor);
 
-		return "redirect:myPage";
+		return "redirect:index";
 	}
 
 	@RequestMapping(value = "myPageProfessor", method = RequestMethod.POST)
@@ -335,7 +365,7 @@ public class UserController {
 		userRepository.save(user);
 		// professorRepository.save(professor);
 
-		return "redirect:myPage";
+		return "redirect:index";
 	}
 
 	@RequestMapping(value = "myPageEmployee", method = RequestMethod.POST)
@@ -367,7 +397,7 @@ public class UserController {
 		userRepository.save(user);
 		// employeeRepository.save(employee);
 
-		return "redirect:myPage";
+		return "redirect:index";
 	}
 
 	@RequestMapping("image")

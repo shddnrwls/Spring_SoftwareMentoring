@@ -12,13 +12,15 @@ import net.skhu.repository.UserRepository;
 public class UserService {
 
 	@Autowired UserRepository userRepository;
+
 	// login 메소드 (사용자가 입력한 로그인 ID와 Password를 검사하는 메소드)
 	public User login(String userId, String password) {
 
 		User user = userRepository.findOneByUserId(userId);
+
 		if (user == null) return null;
 
-		// String pw = Encryption.encrypt(password, Encryption.MD5);	// 암호화풀어주는부분
+		// String pw = Encryption.encrypt(password, Encryption.MD5);	// 암호화하는 부분
 		if (user.getPassword().equals(password) == false) return null;
 
 		// 검사 결과가 성공이면 User 테이블에서 조회한 user 객체를 리턴한다.

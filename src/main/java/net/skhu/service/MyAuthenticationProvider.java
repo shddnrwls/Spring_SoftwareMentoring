@@ -29,8 +29,10 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
 	// 사용자가 입력한 ID와 Password를 검사해야 할 때 Spring Security 엔진에 의해 이 클래스의 authenticate 메소드가 자동으로 호출된다.
 	public Authentication authenticate(String userId, String password) throws AuthenticationException {
+
 		// ID와 Password 검사
 		User user = userService.login(userId, password);
+
 		// 실패하면 null 리턴
 		if (user == null) return null;
 
@@ -47,7 +49,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 			role = "ROLE_MENTEE";
 			break;
 		}
-		System.out.println(user.getAuthority());
+		System.out.println("**********************user.getAuthority: "+ user.getAuthority());
 
 		grantedAuthorities.add(new SimpleGrantedAuthority(role));
 		return new MyAuthentication(userId, password, grantedAuthorities, user);

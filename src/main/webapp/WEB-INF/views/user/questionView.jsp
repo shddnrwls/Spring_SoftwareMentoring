@@ -45,6 +45,7 @@
 		<span class="fa fa-clock-o"></span>
 		<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
 			value="${ question.date }" />
+
 		<hr />
 
 		<div class="text-center">
@@ -53,50 +54,50 @@
 
 		<hr />
 
-
 		<div class="pull-right">
 			<a class="btn btn-danger btn-sm"
 				href="${R}user/questionDelete?id=${ question.id }&${ pagination.queryString }"
 				data-confirm-delete>글 삭제</a> <a class="btn btn-success btn-sm"
 				href="${R}user/questionList?${ pagination.queryString }">목록으로</a>
 		</div>
-		<br />
+
+		<br /> <br />
+
+		<h5>댓글 목록</h5>
+
+		<hr />
 
 		<!-- 여기부터 댓글 -->
-
-		<div class="text-left">
-			<c:forEach var="questioncomment" items="${ questioncommentList }">
-				<b>댓글</b>
+		<c:forEach var="questioncomment" items="${ questioncommentList }">
+			<div class="text-left">
 				<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
 					value="${ questioncomment.date }" />
-				<br />
-				<div>${ questioncomment.content }</div>
-				<br />
-				<a class="btn btn-danger btn-sm"
+				<a class="btn btn-light btn-sm"
 					href="${R}user/questionCommentDelete?id=${ questioncomment.id }&${ pagination.queryString }"
-					data-confirm-delete>글 삭제</a>
-			</c:forEach>
+					data-confirm-delete>댓글 삭제 </a>
+					
+				<div>${ questioncomment.content }</div>
+			</div>
+		</c:forEach>
 
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<br />
-				<form:form method="post" modelAttribute="questioncomment">
-					<form:textarea path="content" name="content" class="form-control"
-						rows="5" id="comment"></form:textarea>
-					<br />
-
-					<div class="text-right">
-						<button class="btn btn-success btn-sm" type=submit>댓글 쓰기</button>
-
-					</div>
-				</form:form>
-			</sec:authorize>
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<br />
-		</div>
+			<form:form method="post" modelAttribute="questioncomment">
+				<form:textarea path="content" name="content" class="form-control"
+					rows="5" id="comment"></form:textarea>
+
+				<div class="text-right">
+					<button class="btn btn-success btn-sm" type=submit>댓글 쓰기</button>
+				</div>
+			</form:form>
+		</sec:authorize>
+		<br />
+	</div>
 
 
 
 
-		<!-- 여기까지 -->
+	<!-- 여기까지 -->
 
 
 	</div>

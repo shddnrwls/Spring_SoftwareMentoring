@@ -33,6 +33,16 @@
 <!-- Custom styles for this template -->
 <link href="${R}res/css/resume.min.css" rel="stylesheet">
 
+<style>
+.mentor {
+	min-width: 300px;
+	max-width: 300px;
+	min-height: 300px;
+	max-height: 300px;
+	border-radius: 50% !important;
+}
+</style>
+
 </head>
 
 <body id="page-top">
@@ -45,8 +55,7 @@
 			<div class="text-center">
 
 				<!-- 사진 이미지 자리 	-->
-				<img src="image?userId=${user.id}" class="img-responsive"
-					style="border-radius: 5px; width: 30%; height: 30%;"
+				<img class="mentor" src="image?userId=${user.id}" class="img-responsive"
 					alt="이미지가 없습니다."> <input type="file" name="fileUpload"
 					class="form-control-file" multiple> <br />
 
