@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import net.skhu.dto.Adminoption;
+import net.skhu.dto.Question;
 import net.skhu.dto.QuestionComment;
 import net.skhu.model.Pagination;
 import net.skhu.model.QuestionModel;
@@ -54,12 +55,11 @@ public class QuestionController {
 	@RequestMapping(value = "questionView", method = RequestMethod.GET)
 	public String view(@RequestParam("id") int id, Model model, Pagination pagination) {
 
-		QuestionComment questionComment = new QuestionComment();
-
 		model.addAttribute("question", questionService.findOne(id));
 		model.addAttribute("questioncommentList", questionCommentRepository.findByQuestionId(id));
 
-		model.addAttribute("questioncomment", questionComment);
+		// 댓글 작성
+		model.addAttribute("questioncomment", new QuestionComment());
 		model.addAttribute("user", UserService.getCurrentUser());
 
 		Adminoption optionList = adminOptionRepository.findOne(1);
@@ -108,7 +108,7 @@ public class QuestionController {
 			return "user/questionEdit";
 		}
 		questionService.update(a, UserService.getCurrentUser().getId());
-		return "redirect:questionView?id=" + a.getId() + "&" + pagination.getQueryString();
+		return "redirect:questionList?" + pagination.getQueryString();
 	}
 
 	@RequestMapping(value = "questionCreate", method = RequestMethod.GET)
@@ -129,13 +129,21 @@ public class QuestionController {
 			return "user/questionEdit";
 		}
 		int id = questionService.insertQuestion(a, UserService.getCurrentUser().getId());
-		return "redirect:questionView?id=" + id + "&" + pagination.getQueryString();
+		return "redirect:questionList?" + pagination.getQueryString();
 	}
 
 	@RequestMapping(value = "questionDelete", method = RequestMethod.GET)
 	public String delete(@RequestParam("id") int id, Pagination pagination, Model model) {
 		questionService.delete(id);
 		return "redirect:questionList?" + pagination.getQueryString();
+	}
+
+	@RequestMapping(value="questionCommentDelete", method=RequestMethod.GET)
+	public String delete(@RequestParam("id") int id, Pagination pagination, Question question){
+		int questionId = questionCommentRepository.findOne(id).getQuestion().getId();
+		questionCommentRepository.delete(questionCommentRepository.findOne(id));
+
+		return "redirect:questionView?id="+ questionId + "&" + pagination.getQueryString();
 	}
 
 }

@@ -18,7 +18,10 @@ public class NoticeService {
 	@Autowired NoticeRepository noticeRepository;
 
 	public Notice findOne(int id){
-		return noticeRepository.findOne(id);
+		Notice notice = noticeRepository.findOne(id);
+		notice.setHit(notice.getHit() + 1);
+		noticeRepository.save(notice);
+		return notice;
 	}
 
 	public List<Notice> findAll(Pagination pagination){

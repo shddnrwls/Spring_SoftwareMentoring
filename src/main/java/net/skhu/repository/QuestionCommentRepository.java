@@ -9,5 +9,6 @@ import net.skhu.dto.QuestionComment;
 public interface QuestionCommentRepository extends JpaRepository<QuestionComment, Integer> {
 
 	List<QuestionComment> findByQuestionId(int id);
+	QuestionComment findOne(int id);
 
 }

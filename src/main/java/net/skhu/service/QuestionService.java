@@ -19,7 +19,10 @@ public class QuestionService {
 	@Autowired QuestionRepository questionRepository;
 
 	public Question findOne(int id){
-		return questionRepository.findOne(id);
+		Question question = questionRepository.findOne(id);
+		question.setHit(question.getHit() + 1);
+		questionRepository.save(question);
+		return question;
 	}
 
 	public List<Question> findAll(Pagination pagination){

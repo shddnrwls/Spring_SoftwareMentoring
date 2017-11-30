@@ -41,6 +41,7 @@ public class NoticeController {
 
 	@RequestMapping("noticeView")
 	public String view(@RequestParam("id") int id, Pagination pagination, Model model) {
+
 		model.addAttribute("notice", noticeService.findOne(id));
 
 		Adminoption optionList = adminOptionRepository.findOne(1);
@@ -89,7 +90,7 @@ public class NoticeController {
 		if (bindingResult.hasErrors()) {
 			return "admin/noticeEdit";
 		}
-		int id = noticeService.insertNotice(a);
+		// int id = noticeService.insertNotice(a);
 		return "redirect:noticeList?" + pagination.getQueryString();
 	}
 

@@ -41,8 +41,8 @@
 	<div class="container pull-left" style="padding-top: 10%;">
 
 		<h3>${ question.title }</h3>
-		<span class="fa fa-user-circle"></span> 글쓴이: ${ question.student.user.name }<span
-			class="fa fa-clock-o"></span>
+		<span class="fa fa-user-circle"></span> 글쓴이: ${ question.student.user.name }
+		<span class="fa fa-clock-o"></span>
 		<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
 			value="${ question.date }" />
 		<hr />
@@ -57,21 +57,24 @@
 		<div class="pull-right">
 			<a class="btn btn-danger btn-sm"
 				href="${R}user/questionDelete?id=${ question.id }&${ pagination.queryString }"
-				data-confirm-delete>삭제</a> <a class="btn btn-success btn-sm"
+				data-confirm-delete>글 삭제</a> <a class="btn btn-success btn-sm"
 				href="${R}user/questionList?${ pagination.queryString }">목록으로</a>
 		</div>
 		<br />
 
-		<!-- 여기부터 -->
+		<!-- 여기부터 댓글 -->
 
 		<div class="text-left">
 			<c:forEach var="questioncomment" items="${ questioncommentList }">
-				<b>답변</b>
+				<b>댓글</b>
 				<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
 					value="${ questioncomment.date }" />
 				<br />
 				<div>${ questioncomment.content }</div>
 				<br />
+				<a class="btn btn-danger btn-sm"
+					href="${R}user/questionCommentDelete?id=${ questioncomment.id }&${ pagination.queryString }"
+					data-confirm-delete>글 삭제</a>
 			</c:forEach>
 
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -82,7 +85,7 @@
 					<br />
 
 					<div class="text-right">
-						<button class="btn btn-success btn-sm" type=submit>확인</button>
+						<button class="btn btn-success btn-sm" type=submit>댓글 쓰기</button>
 
 					</div>
 				</form:form>
