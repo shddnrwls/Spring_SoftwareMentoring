@@ -26,4 +26,8 @@ public class QuestionComment {
 	@ManyToOne
 	@JoinColumn(name = "questionId")
 	Question question;
+
+	@ManyToOne
+	@JoinColumn(name ="userId")
+	User user;
 }

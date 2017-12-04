@@ -73,6 +73,7 @@
 		<!-- 여기부터 댓글 -->
 		<c:forEach var="questioncomment" items="${ questioncommentList }">
 			<div class="text-left">
+				<span>${ questioncomment.user.name }</span>
 				<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
 					value="${ questioncomment.date }" />
 				<a class="btn btn-light btn-sm"
@@ -83,17 +84,15 @@
 			</div>
 		</c:forEach>
 
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<br />
-			<form:form method="post" modelAttribute="questioncomment">
-				<form:textarea path="content" name="content" class="form-control"
-					rows="5" id="comment"></form:textarea>
+		<br />
+		<form:form method="post" modelAttribute="questioncomment">
+			<form:textarea path="content" name="content" class="form-control"
+				rows="5" id="comment"></form:textarea>
 
-				<div class="text-right">
-					<button class="btn btn-success btn-sm" type=submit>댓글 쓰기</button>
-				</div>
-			</form:form>
-		</sec:authorize>
+			<div class="text-right">
+				<button class="btn btn-success btn-sm" type=submit>댓글 쓰기</button>
+			</div>
+		</form:form>
 		<br />
 	</div>
 

@@ -81,6 +81,7 @@ public class QuestionController {
 		temp = temp.replace("\r\n", "<br/>");
 		newComment.setContent(temp);
 		newComment.setQuestion(questionRepository.findOne(id));
+		newComment.setUser(UserService.getCurrentUser());
 		newComment.setDate(new Date());
 
 		questionCommentRepository.save(newComment);
@@ -144,9 +145,12 @@ public class QuestionController {
 	@RequestMapping(value="questionCommentDelete", method=RequestMethod.GET)
 	public String delete(@RequestParam("id") int id, Pagination pagination, Question question){
 		int questionId = questionCommentRepository.findOne(id).getQuestion().getId();
-		questionCommentRepository.delete(questionCommentRepository.findOne(id));
 
-		return "redirect:questionView?id="+ questionId + "&" + pagination.getQueryString();
+		if(UserService.getCurrentUser().getId() == questionCommentRepository.findOne(id).getUser().getId() || UserService.getCurrentUser().getAuthority().equals("3")){
+			questionCommentRepository.delete(questionCommentRepository.findOne(id));
+			return "redirect:questionView?id="+ questionId + "&" + pagination.getQueryString();
+		}
+		else return "redirect:questionView?id="+ questionId + "&" + pagination.getQueryString();
 	}
 
 }
