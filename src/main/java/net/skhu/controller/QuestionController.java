@@ -88,7 +88,7 @@ public class QuestionController {
 		return "redirect:questionView?id=" + id + "&" + pagination.getQueryString();
 	}
 
-	// 작성자, 관리자만 수정 삭제 가능하게 해야함
+	// 작성자만 수정 가능
 	@RequestMapping(value = "questionEdit", method = RequestMethod.GET)
 	public String edit(@RequestParam("id") int id, Pagination pagination, Model model) {
 		model.addAttribute("user", UserService.getCurrentUser());
@@ -97,7 +97,8 @@ public class QuestionController {
 		Adminoption optionList = adminOptionRepository.findOne(1);
 		model.addAttribute("optionList", optionList);
 
-		return "user/questionEdit";
+		if(UserService.getCurrentUser().getId() == questionService.findOne(id).getStudent().getId()) return "user/questionEdit";
+		else return "redirect:questionView?id="+id+"&"+pagination.getQueryString();
 	}
 
 	@Transactional
@@ -127,14 +128,17 @@ public class QuestionController {
 		if (bindingResult.hasErrors()) {
 			return "user/questionEdit";
 		}
-		int id = questionService.insertQuestion(a, UserService.getCurrentUser().getId());
+		// int id = questionService.insertQuestion(a, UserService.getCurrentUser().getId());
 		return "redirect:questionList?" + pagination.getQueryString();
 	}
 
 	@RequestMapping(value = "questionDelete", method = RequestMethod.GET)
 	public String delete(@RequestParam("id") int id, Pagination pagination, Model model) {
-		questionService.delete(id);
-		return "redirect:questionList?" + pagination.getQueryString();
+		if(UserService.getCurrentUser().getId() == questionService.findOne(id).getStudent().getId() || UserService.getCurrentUser().getAuthority().equals("3")){
+			questionService.delete(id);
+			return "redirect:questionList?" + pagination.getQueryString();
+		}
+		else return "redirect:questionView?id="+id+"&"+pagination.getQueryString();
 	}
 
 	@RequestMapping(value="questionCommentDelete", method=RequestMethod.GET)

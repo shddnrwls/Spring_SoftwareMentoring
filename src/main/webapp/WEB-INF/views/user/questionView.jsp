@@ -55,10 +55,13 @@
 		<hr />
 
 		<div class="pull-right">
+			<a class="btn btn-primary btn-sm"
+				href="${R}user/questionEdit?id=${ question.id }&${ pagination.queryString }">수정</a>
 			<a class="btn btn-danger btn-sm"
 				href="${R}user/questionDelete?id=${ question.id }&${ pagination.queryString }"
 				data-confirm-delete>글 삭제</a> <a class="btn btn-success btn-sm"
 				href="${R}user/questionList?${ pagination.queryString }">목록으로</a>
+
 		</div>
 
 		<br /> <br />
@@ -75,7 +78,7 @@
 				<a class="btn btn-light btn-sm"
 					href="${R}user/questionCommentDelete?id=${ questioncomment.id }&${ pagination.queryString }"
 					data-confirm-delete>댓글 삭제 </a>
-					
+
 				<div>${ questioncomment.content }</div>
 			</div>
 		</c:forEach>

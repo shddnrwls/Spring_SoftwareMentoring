@@ -343,6 +343,8 @@ public class UserController {
 
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
 
+		// newPassword = Encryption.encrypt(newPassword, Encryption.MD5); // MD5 암호화
+
 		for (MultipartFile uploadFile : uploadFiles) {
 			if (uploadFile.getSize() <= 0)
 				continue;

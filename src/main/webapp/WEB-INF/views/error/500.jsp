@@ -54,7 +54,7 @@
 			<ul class="navbar-nav">
 				<li style="color: white; font-size: 14pt"><sec:authentication
 						property="user.name" /></li>
-				<li><a href="logout_processing" class="page-scroll"><button
+				<li><a href="${R}logout_processing" class="page-scroll"><button
 							type="button" class="btn btn-outline-light btn-sm">로그아웃</button></a>
 					<hr /></li>
 
