@@ -162,20 +162,25 @@ public class UserController {
 
 	@RequestMapping(value = "mentorApply", method = RequestMethod.GET)
 	public String mentorApply(Model model) {
-		Principal principal = SecurityContextHolder.getContext().getAuthentication();
-		Student student = studentRepository.findByUserUserId(principal.getName());
-
-		MentorApply mentorApply = new MentorApply();
-		mentorApply.setStudent(student);
-
-		model.addAttribute("student", student);
-		model.addAttribute("mentorApply", mentorApply);
-		model.addAttribute("principal", principal);
 
 		Adminoption optionList = adminOptionRepository.findOne(1);
 		model.addAttribute("optionList", optionList);
 
-		return "user/mentorApply";
+		if (optionList.getMentorActive() == null)
+			return "redirect:/user/index";
+		else {
+			Principal principal = SecurityContextHolder.getContext().getAuthentication();
+			Student student = studentRepository.findByUserUserId(principal.getName());
+
+			MentorApply mentorApply = new MentorApply();
+			mentorApply.setStudent(student);
+
+			model.addAttribute("student", student);
+			model.addAttribute("mentorApply", mentorApply);
+			model.addAttribute("principal", principal);
+
+			return "user/mentorApply";
+		}
 	}
 
 	@RequestMapping(value = "mentorApply", method = RequestMethod.POST)
@@ -219,21 +224,24 @@ public class UserController {
 
 		model.addAttribute("mentorList", mentorList);
 		model.addAttribute("optionList", optionList);
-		return "user/menteeSelect";
+
+		if(optionList.getMenteeActive() == null) return "redirect:/user/index";
+		else return "user/menteeSelect";
 	}
 
-//	@RequestMapping(value = "menteeSelectRoom/{id}", method = RequestMethod.GET)
-//	public String mentorRoom(Model model, @PathVariable int id) {
-//
-//		MentorRoom mentorRoom = mentorRoomRepository.findOne(id);
-//		List<Team> teamList = teamRepository.findBymentorRoomId(id);
-//		Adminoption optionList = adminOptionRepository.findOne(1);
-//
-//		model.addAttribute("mentorRoom", mentorRoom);
-//		model.addAttribute("teamList", teamList);
-//		model.addAttribute("optionList", optionList);
-//		return "user/menteeSelectRoom";
-//	}
+	// @RequestMapping(value = "menteeSelectRoom/{id}", method =
+	// RequestMethod.GET)
+	// public String mentorRoom(Model model, @PathVariable int id) {
+	//
+	// MentorRoom mentorRoom = mentorRoomRepository.findOne(id);
+	// List<Team> teamList = teamRepository.findBymentorRoomId(id);
+	// Adminoption optionList = adminOptionRepository.findOne(1);
+	//
+	// model.addAttribute("mentorRoom", mentorRoom);
+	// model.addAttribute("teamList", teamList);
+	// model.addAttribute("optionList", optionList);
+	// return "user/menteeSelectRoom";
+	// }
 
 	@RequestMapping(value = "menteeSelectRoom", method = RequestMethod.GET)
 	public String mentorRoom(Model model, @RequestParam("id") int id) {
@@ -328,101 +336,100 @@ public class UserController {
 
 	}
 
+	@RequestMapping(value = "myPageStudent", method = RequestMethod.POST)
+	public String myPage(Model model, Student student, User user,
+			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
+			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
 
-	   @RequestMapping(value = "myPageStudent", method = RequestMethod.POST)
-	   public String myPage(Model model, Student student, User user,
-	         @RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
-	         @RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
+		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
 
-	      ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
+		for (MultipartFile uploadFile : uploadFiles) {
+			if (uploadFile.getSize() <= 0)
+				continue;
+			String fileName = Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
+			ImageFile imageFile = new ImageFile();
+			imageFile.setFileName(fileName);
+			imageFile.setFileSize((int) uploadFile.getSize());
+			imageFile.setFileTime(new Date());
+			imageFile.setData(uploadFile.getBytes());
+			imageFile.setUser(user);
+			if (oldImageFile != null)
+				imageFileRepository.delete(oldImageFile);
+			imageFileRepository.save(imageFile);
 
-	      for (MultipartFile uploadFile : uploadFiles) {
-	         if (uploadFile.getSize() <= 0)
-	            continue;
-	         String fileName = Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
-	         ImageFile imageFile = new ImageFile();
-	         imageFile.setFileName(fileName);
-	         imageFile.setFileSize((int) uploadFile.getSize());
-	         imageFile.setFileTime(new Date());
-	         imageFile.setData(uploadFile.getBytes());
-	         imageFile.setUser(user);
-	         if (oldImageFile != null)
-	            imageFileRepository.delete(oldImageFile);
-	         imageFileRepository.save(imageFile);
+		}
 
-	      }
+		if (!newPassword.equals("0"))
+			user.setPassword(newPassword);
+		System.out.println(user);
+		userRepository.save(user);
+		// studentRepository.save(professor);
 
-	      if (!newPassword.equals("0"))
-	         user.setPassword(newPassword);
-	      System.out.println(user);
-	      userRepository.save(user);
-	      // studentRepository.save(professor);
+		return "redirect:myPage";
+	}
 
-	      return "redirect:myPage";
-	   }
+	@RequestMapping(value = "myPageProfessor", method = RequestMethod.POST)
+	public String myPage(Model model, Professor professor, User user,
+			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
+			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
 
-	   @RequestMapping(value = "myPageProfessor", method = RequestMethod.POST)
-	   public String myPage(Model model, Professor professor, User user,
-	         @RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
-	         @RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
+		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
 
-	      ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
+		for (MultipartFile uploadFile : uploadFiles) {
+			if (uploadFile.getSize() <= 0)
+				continue;
+			String fileName = Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
+			ImageFile imageFile = new ImageFile();
+			imageFile.setFileName(fileName);
+			imageFile.setFileSize((int) uploadFile.getSize());
+			imageFile.setFileTime(new Date());
+			imageFile.setData(uploadFile.getBytes());
+			imageFile.setUser(user);
+			if (oldImageFile != null)
+				imageFileRepository.delete(oldImageFile);
+			imageFileRepository.save(imageFile);
 
-	      for (MultipartFile uploadFile : uploadFiles) {
-	         if (uploadFile.getSize() <= 0)
-	            continue;
-	         String fileName = Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
-	         ImageFile imageFile = new ImageFile();
-	         imageFile.setFileName(fileName);
-	         imageFile.setFileSize((int) uploadFile.getSize());
-	         imageFile.setFileTime(new Date());
-	         imageFile.setData(uploadFile.getBytes());
-	         imageFile.setUser(user);
-	         if (oldImageFile != null)
-	            imageFileRepository.delete(oldImageFile);
-	         imageFileRepository.save(imageFile);
+		}
 
-	      }
+		if (!newPassword.equals("0"))
+			user.setPassword(newPassword);
+		System.out.println(user);
+		userRepository.save(user);
+		// professorRepository.save(professor);
 
-	      if (!newPassword.equals("0"))
-	         user.setPassword(newPassword);
-	      System.out.println(user);
-	      userRepository.save(user);
-	      // professorRepository.save(professor);
+		return "redirect:myPage";
+	}
 
-	      return "redirect:myPage";
-	   }
+	@RequestMapping(value = "myPageEmployee", method = RequestMethod.POST)
+	public String myPage(Model model, Employee employee, User user,
+			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
+			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
 
-	   @RequestMapping(value = "myPageEmployee", method = RequestMethod.POST)
-	   public String myPage(Model model, Employee employee, User user,
-	         @RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
-	         @RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
+		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
 
-	      ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
+		for (MultipartFile uploadFile : uploadFiles) {
+			if (uploadFile.getSize() <= 0)
+				continue;
+			String fileName = Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
+			ImageFile imageFile = new ImageFile();
+			imageFile.setFileName(fileName);
+			imageFile.setFileSize((int) uploadFile.getSize());
+			imageFile.setFileTime(new Date());
+			imageFile.setData(uploadFile.getBytes());
+			imageFile.setUser(user);
+			if (oldImageFile != null)
+				imageFileRepository.delete(oldImageFile);
+			imageFileRepository.save(imageFile);
 
-	      for (MultipartFile uploadFile : uploadFiles) {
-	         if (uploadFile.getSize() <= 0)
-	            continue;
-	         String fileName = Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
-	         ImageFile imageFile = new ImageFile();
-	         imageFile.setFileName(fileName);
-	         imageFile.setFileSize((int) uploadFile.getSize());
-	         imageFile.setFileTime(new Date());
-	         imageFile.setData(uploadFile.getBytes());
-	         imageFile.setUser(user);
-	         if (oldImageFile != null)
-	            imageFileRepository.delete(oldImageFile);
-	         imageFileRepository.save(imageFile);
+		}
 
-	      }
+		if (!newPassword.equals("0"))
+			user.setPassword(newPassword);
+		userRepository.save(user);
+		// employeeRepository.save(employee);
 
-	      if (!newPassword.equals("0"))
-	         user.setPassword(newPassword);
-	      userRepository.save(user);
-	      // employeeRepository.save(employee);
-
-	      return "redirect:myPage";
-	 }
+		return "redirect:myPage";
+	}
 
 	@RequestMapping("surveyApply")
 	public String surveyApply(Model model) {
@@ -483,7 +490,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "report", method = RequestMethod.POST)
-	public String report(Model model, Report report, @RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
+	public String report(Model model, Report report, @RequestParam("fileUpload") MultipartFile[] uploadFiles)
+			throws IOException {
 
 		Principal principal = SecurityContextHolder.getContext().getAuthentication();
 		Student student = studentRepository.findByUserUserId(principal.getName());
@@ -491,14 +499,13 @@ public class UserController {
 
 		/*
 		 * 여기부턴 중복검사 만약 같은 주차의 report가 있다면
-
-		List<Report> listReport = reportRepository.findByWeek(report.getWeek());
-		if (listReport != null)
-			for (Report data : listReport)
-				// 그 중 mentorRoomId가 같은 것이 있다면
-				if (data.getMentorRoom().getId() == mentorRoom.getId())
-					return "user/already";
-		// 여기까지*/
+		 *
+		 * List<Report> listReport =
+		 * reportRepository.findByWeek(report.getWeek()); if (listReport !=
+		 * null) for (Report data : listReport) // 그 중 mentorRoomId가 같은 것이 있다면
+		 * if (data.getMentorRoom().getId() == mentorRoom.getId()) return
+		 * "user/already"; // 여기까지
+		 */
 
 		PastReport pastReport = new PastReport();
 
@@ -506,65 +513,67 @@ public class UserController {
 		report.setYear(2017);
 		report.setSemester(2);
 
-		List<Team> teamList = teamRepository.findBymentorRoomIdAndAthority(mentorRoom.getId(),0);
-	      String mentees = new String();
+		List<Team> teamList = teamRepository.findBymentorRoomIdAndAthority(mentorRoom.getId(), 0);
+		String mentees = new String();
 
-	      for(int i = 0; i<teamList.size();i++) {
-	         mentees += teamList.get(i).getStudent().getUser().getName() + " ";
-	      }
+		for (int i = 0; i < teamList.size(); i++) {
+			mentees += teamList.get(i).getStudent().getUser().getName() + " ";
+		}
 
+		pastReport.setAttendedMentee(report.getAttendedMentee());
+		pastReport.setContents(report.getContents());
+		pastReport.setDepName(mentorRoom.getStudent().getDepartment().getDepName());
+		pastReport.setFile(report.getFile());
+		pastReport.setMentees(mentees);
+		pastReport.setMentor(student.getUser().getName());
+		pastReport.setMentorId(principal.getName());
+		pastReport.setPlace(report.getPlace());
+		pastReport.setWeek(report.getWeek());
+		pastReport.setYear(report.getYear() + "-" + report.getSemester());
 
-	      pastReport.setAttendedMentee(report.getAttendedMentee());
-	      pastReport.setContents(report.getContents());
-	      pastReport.setDepName(mentorRoom.getStudent().getDepartment().getDepName());
-	      pastReport.setFile(report.getFile());
-	      pastReport.setMentees(mentees);
-	      pastReport.setMentor(student.getUser().getName());
-	      pastReport.setMentorId(principal.getName());
-	      pastReport.setPlace(report.getPlace());
-	      pastReport.setWeek(report.getWeek());
-	      pastReport.setYear(report.getYear()+"-"+report.getSemester());
+		reportRepository.save(report);
+		pastReportRepository.save(pastReport);
 
-	      reportRepository.save(report);
-	      pastReportRepository.save(pastReport);
+		/*
+		 * ReportImageFile oldReportImageFile =
+		 * reportImageFileRepository.findByReportId(report.getId()); for
+		 * (MultipartFile uploadFile : uploadFiles) { if (uploadFile.getSize()
+		 * <= 0) continue; String fileName =
+		 * Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
+		 * ReportImageFile reportImageFile = new ReportImageFile();
+		 * reportImageFile.setFileName(fileName);
+		 * reportImageFile.setFileSize((int) uploadFile.getSize());
+		 * reportImageFile.setFileTime(new Date());
+		 * reportImageFile.setData(uploadFile.getBytes());
+		 * reportImageFile.setReport(report); if (oldReportImageFile != null)
+		 * reportImageFileRepository.delete(oldReportImageFile);
+		 * reportImageFileRepository.save(reportImageFile); }
+		 */
 
-	     /* ReportImageFile oldReportImageFile = reportImageFileRepository.findByReportId(report.getId());
-		   for (MultipartFile uploadFile : uploadFiles) {
-			   if (uploadFile.getSize() <= 0)
-		         continue;
-		      String fileName = Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
-		      ReportImageFile reportImageFile = new ReportImageFile();
-		      reportImageFile.setFileName(fileName);
-		      reportImageFile.setFileSize((int) uploadFile.getSize());
-		      reportImageFile.setFileTime(new Date());
-		      reportImageFile.setData(uploadFile.getBytes());
-		      reportImageFile.setReport(report);
-		      if (oldReportImageFile != null)
-		         reportImageFileRepository.delete(oldReportImageFile);
-		      reportImageFileRepository.save(reportImageFile);
-		   }*/
-
-	      return "redirect:index";
+		return "redirect:index";
 	}
 
-	/*ReportImageFile oldReportImageFile = reportImageFileRepository.findByReportId(report.getId());
+	/*
+	 * ReportImageFile oldReportImageFile =
+	 * reportImageFileRepository.findByReportId(report.getId());
+	 *
+	 * for (MultipartFile uploadFile : uploadFiles) { if (uploadFile.getSize()
+	 * <= 0) continue; String fileName =
+	 * Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
+	 * ReportImageFile reportImageFile = new ReportImageFile();
+	 * reportImageFile.setFileName(fileName); reportImageFile.setFileSize((int)
+	 * uploadFile.getSize()); reportImageFile.setFileTime(new Date());
+	 * reportImageFile.setData(uploadFile.getBytes());
+	 * reportImageFile.setReport(report); if (oldReportImageFile != null)
+	 * reportImageFileRepository.delete(oldReportImageFile);
+	 * reportImageFileRepository.save(reportImageFile);
+	 *
+	 * }
+	 */
 
-	   for (MultipartFile uploadFile : uploadFiles) {
-	      if (uploadFile.getSize() <= 0)
-	         continue;
-	      String fileName = Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
-	      ReportImageFile reportImageFile = new ReportImageFile();
-	      reportImageFile.setFileName(fileName);
-	      reportImageFile.setFileSize((int) uploadFile.getSize());
-	      reportImageFile.setFileTime(new Date());
-	      reportImageFile.setData(uploadFile.getBytes());
-	      reportImageFile.setReport(report);
-	      if (oldReportImageFile != null)
-	         reportImageFileRepository.delete(oldReportImageFile);
-	      reportImageFileRepository.save(reportImageFile);
-
-	   }*/
-
-	   /*@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {*/
+	/*
+	 * @RequestParam("fileUpload") MultipartFile[] uploadFiles) throws
+	 * IOException {
+	 */
 
 }
