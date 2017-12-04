@@ -37,13 +37,11 @@
 <style>
 .frame {
 	border: 1px solid darkgray;
-	padding: 40px 20px;
 	text-align: center;
 	/* 	opacity: 0.5;
 	transition: all 0.8s; */
 	min-width: 300px;
 	max-height: 400px;
-	/* margin-bottom: 30px; */
 	color: black;
 	font-size: 24px;
 }
@@ -64,7 +62,7 @@
 				<c:forEach var="mentorRoom" items="${ mentorList }">
 					<div class="col-sm">
 						<div class="frame">
-							<a href="${R}user/menteeSelectRoom/${ mentorRoom.id }"
+							<a href="${R}user/menteeSelectRoom?id=${ mentorRoom.id }"
 								style="cursor: pointer"> <img class="mentor"
 								src="image?userId=${ mentorRoom.student.user.id }"
 								alt="이미지가 없습니다.">

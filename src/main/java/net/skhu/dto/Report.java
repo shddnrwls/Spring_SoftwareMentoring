@@ -26,7 +26,8 @@ public class Report {
 	String file;
 	int year;
 	int semester;
-	String week;
+	int week;
+	String attendedMentee;
 
 	@JsonIgnore
 	@ManyToOne

@@ -1,9 +1,17 @@
 package net.skhu.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,19 +24,26 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import net.skhu.dto.Adminoption;
+import net.skhu.dto.LicenseFile;
 import net.skhu.dto.MentorApply;
 import net.skhu.dto.MentorRoom;
+import net.skhu.dto.PastReport;
 import net.skhu.dto.Report;
+import net.skhu.dto.SurveyURL;
 import net.skhu.dto.Team;
 import net.skhu.dto.User;
 import net.skhu.model.Pagination;
 import net.skhu.repository.AdminoptionRepository;
 import net.skhu.repository.EmployeeRepository;
+import net.skhu.repository.LicenseFileRepository;
 import net.skhu.repository.MentorApplyRepository;
 import net.skhu.repository.MentorRoomRepository;
+import net.skhu.repository.PastReportRepository;
 import net.skhu.repository.ProfessorRepository;
+import net.skhu.repository.ReportImageFileRepository;
 import net.skhu.repository.ReportRepository;
 import net.skhu.repository.StudentRepository;
+import net.skhu.repository.SurveyURLRepository;
 import net.skhu.repository.TeamRepository;
 import net.skhu.repository.UserRepository;
 import net.skhu.service.TaskService;
@@ -58,6 +73,14 @@ public class AdminController {
 	TeamRepository teamRepository;
 	@Autowired
 	ReportRepository reportRepository;
+	@Autowired
+	PastReportRepository pastReportRepository;
+	@Autowired
+	LicenseFileRepository licenseFileRepository;
+	@Autowired
+	SurveyURLRepository surveyURLRepository;
+	@Autowired
+	ReportImageFileRepository reportImageFileRepository;
 
 	@RequestMapping("index")
 	public String list(Model model, Pagination pagination) {
@@ -79,6 +102,7 @@ public class AdminController {
 		model.addAttribute("orderBy", UserRepository.orderBy);
 		model.addAttribute("searchBy", UserRepository.searchBy);
 		model.addAttribute("reportList", reportList);
+		model.addAttribute("surveyURL", surveyURLRepository.findOne(1));
 
 		// 다시 int형으로 되어있던것을 text형태로 만들어주는 코드.
 		if (pagination.getSb() == 3)
@@ -157,8 +181,8 @@ public class AdminController {
 		return "admin/allMentorRoom";
 	}
 
-	@RequestMapping(value = "mentorApply/{id}", method = RequestMethod.GET)
-	public String mentorApply(Model model, @PathVariable int id) {
+	@RequestMapping(value = "mentorApply", method = RequestMethod.GET)
+	public String mentorApply(Model model, @RequestParam("id") int id) {
 
 		MentorApply mentorApply = mentorApplyRepository.findOne(id);
 		model.addAttribute("mentorApply", mentorApply);
@@ -169,8 +193,25 @@ public class AdminController {
 		return "admin/mentorApply";
 	}
 
-	@RequestMapping(value = "adminMentorRoom/{id}", method = RequestMethod.GET)
-	public String mentorRoom(Model model, @PathVariable int id) {
+	/*@RequestMapping("readReportImage")
+	   public void readReportImage(@RequestParam(value = "reportId") int reportId, HttpServletResponse response)
+	         throws IOException {
+
+	      ReportImageFile reportImageFile = reportImageFileRepository.findByReportId(reportId);
+
+	      System.out.println(reportImageFile);
+	      if (reportImageFile == null)
+	         return;
+	      String fileName = URLEncoder.encode(reportImageFile.getFileName(), "UTF-8");
+	      response.setContentType(reportImageFile.getMimeType());
+	      response.setHeader("Content-Disposition", "filename=" + fileName + ";");
+	      try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+	         output.write(reportImageFile.getData());
+	      }
+	   }*/
+
+	@RequestMapping(value = "adminMentorRoom", method = RequestMethod.GET)
+	public String mentorRoom(Model model, @RequestParam("id") int id) {
 
 		MentorRoom mentorRoom = mentorRoomRepository.findOne(id);
 		List<Team> teamList = teamRepository.findBymentorRoomId(id);
@@ -183,8 +224,8 @@ public class AdminController {
 		return "admin/adminMentorRoom";
 	}
 
-	@RequestMapping(value = "success/{id}", method = RequestMethod.GET)
-	public String success(Model model, @PathVariable int id) {
+	@RequestMapping(value = "success", method = RequestMethod.GET)
+	public String success(Model model, @RequestParam("id") int id) {
 
 		MentorApply mentorApply = mentorApplyRepository.findOne(id);
 		MentorRoom mentorRoom = new MentorRoom();
@@ -217,8 +258,8 @@ public class AdminController {
 		return "redirect:index";
 	}
 
-	@RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-	public String delete(Model model, @PathVariable int id) {
+	@RequestMapping(value = "delete", method = RequestMethod.GET)
+	public String delete(Model model, @RequestParam("id") int id) {
 
 		MentorApply mentorApply = mentorApplyRepository.findOne(id);
 		model.addAttribute("mentorApply", mentorApply);
@@ -227,8 +268,8 @@ public class AdminController {
 		return "redirect:index";
 	}
 
-	@RequestMapping(value = "mentorRoomDelete/{id}", method = RequestMethod.GET)
-	public String metorroomdelete(Model model, @PathVariable int id) {
+	@RequestMapping(value = "mentorRoomDelete", method = RequestMethod.GET)
+	public String metorroomdelete(Model model, @RequestParam("id") int id) {
 
 		MentorRoom mentorRoom = mentorRoomRepository.findOne(id);
 		model.addAttribute("mentorApply", mentorRoom);
@@ -237,14 +278,14 @@ public class AdminController {
 		return "redirect:/admin/allMentorRoom";
 	}
 
-	@RequestMapping(value = "teamDelete/{id}", method = RequestMethod.GET)
-	public String deleteTeam(Model model, @PathVariable int id) {
+	@RequestMapping(value = "teamDelete", method = RequestMethod.GET)
+	public String deleteTeam(Model model, @RequestParam("id") int id) {
 
 		Team team = teamRepository.findOne(id);
 		model.addAttribute("team", team);
 		teamRepository.delete(team);
 
-		return "redirect:/admin/adminMentorRoom/" + team.getMentorRoomId();
+		return "redirect:/admin/adminMentorRoom?id=" + team.getMentorRoomId();
 	}
 
 	@RequestMapping("changeAuthority")
@@ -289,18 +330,34 @@ public class AdminController {
 
 	}
 
+
+
+	@RequestMapping("adminReport")
+	public String report(Model model, Pagination pagination) {
+		//List<Report> reportList = reportRepository.findAll(pagination);
+		List<PastReport> pastReportList = pastReportRepository.findAll(pagination);
+
+		model.addAttribute("orderBy", PastReportRepository.orderBy);
+		model.addAttribute("searchBy", PastReportRepository.searchBy);
+		//model.addAttribute("reportList", reportList);
+		model.addAttribute("pastReportList", pastReportList);
+
+
+
+		return "admin/adminReport";
+	}
+
 	@RequestMapping("excelView/{id}")
-	public String excelView(Model model, @PathVariable int id) throws Exception {
-		System.out.println("농욱진");
+	public String excelView(Model model, @PathVariable int id, HttpServletResponse response) throws Exception {
 
-		Report report = reportRepository.findOne(id);
-		List<Report> reportList = new ArrayList<>();
+		PastReport pastReport = pastReportRepository.findOne(id);
+		List<PastReport> reportList = new ArrayList<>();
 
-		reportList.add(report);
+		reportList.add(pastReport);
 
 		WriteReportToExcelFile.writeReportToFile(
-				report.getMentorRoom().getStudent().getUser().getUserId() + "_" + report.getWeek() + "_report.xlsx",
-				reportList);
+				getNowYMD() + "_" + pastReport.getMentorId() + "_" + pastReport.getWeek() +"주차_report.xlsx",
+				reportList, response);
 
 		return "redirect:/admin/index";
 	}
@@ -314,6 +371,37 @@ public class AdminController {
 		WriteReportToExcelFile.writeAllReportToFile("all_report.xlsx", reportList);
 
 		return "redirect:/admin/index";
+	}
+
+	@RequestMapping("license")
+	public void license(@RequestParam(value = "mentorApplyId") int mentorApplyId, HttpServletResponse response) throws IOException {
+		System.out.println(mentorApplyId);
+		LicenseFile licenseFile = licenseFileRepository.findByMentorApplyId(mentorApplyId);
+		if (licenseFile == null)
+			return;
+		String fileName = URLEncoder.encode(licenseFile.getFileName(), "UTF-8");
+		response.setContentType(licenseFile.getMimeType());
+		response.setHeader("Content-Disposition", "filename=" + fileName + ";");
+		try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+			output.write(licenseFile.getData());
+		}
+	}
+
+	@RequestMapping(value="editSurveyURL", method = RequestMethod.POST)
+	public String editQuestionURL(Model model, SurveyURL surveyURL) {
+		surveyURL.setId(1);
+		surveyURLRepository.save(surveyURL);
+		return "redirect:/admin/index";
+	}
+
+
+	private String getNowYMD() {
+		StringBuffer dateResult = new StringBuffer();
+
+		Date date = new Date();
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+		simpleDate.format(date, dateResult, new FieldPosition(1));
+		return dateResult.toString();
 	}
 
 }

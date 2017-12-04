@@ -54,9 +54,7 @@ body {
 			</h3>
 			<div>${ mentorApply.student.user.email }</div>
 			<hr />
-			<img class="mentor"
-				src="image?userId=${ mentorApply.student.user.id }" alt="이미지가 없습니다.">
-			<hr />
+			
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -87,6 +85,15 @@ body {
 			<br />
 			<h3>스터디 방법</h3>
 			<div class="card card-body">${ mentorApply.method }</div>
+			<br />
+			<hr />
+			<br />
+			<h3>자격증 및 증빙서류</h3>
+			<div class="card card-body">
+				<img class="mentor"
+					src="${R}admin/license?mentorApplyId=${ mentorApply.id }"
+					alt="이미지가 없습니다.">
+			</div>
 			<br />
 			<hr />
 			<br />

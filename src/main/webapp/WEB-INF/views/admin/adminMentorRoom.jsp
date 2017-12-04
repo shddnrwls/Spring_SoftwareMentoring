@@ -56,7 +56,7 @@ body {
 			<div>${ mentorRoom.student.user.email }</div>
 			<hr />
 			<img class="mentor"
-				src="image?userId=${ mentorRoom.student.user.id }" alt="이미지가 없습니다.">
+				src="/mentoringNew/user/image?userId=${ mentorRoom.student.user.id }" alt="이미지가 없습니다.">
 			<hr />
 			<table class="table table-bordered">
 				<thead>
@@ -98,7 +98,7 @@ body {
 							<td>권한</td>
 							<td>${ team.student.user.phoneNumber }</td>
 							<td>${team.student.user.email }</td>
-							<td><a href="${R}admin/teamDelete/${team.id}">삭제 </a></td>
+							<td><a href="${R}admin/teamDelete?id=${team.id}">삭제 </a></td>
 
 						</tr>
 					</c:forEach>
@@ -123,7 +123,7 @@ body {
 			<br />
 		</div>
 		<div class="text-center">
-			<a href="${R}admin/mentorRoomDelete/${mentorRoom.id}"><button
+			<a href="${R}admin/mentorRoomDelete?id=${mentorRoom.id}"><button
 					type="button" class="btn btn-danger" id="delete">삭제</button> </a>
 		</div>
 

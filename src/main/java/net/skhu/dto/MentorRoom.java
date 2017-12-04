@@ -39,8 +39,4 @@ public class MentorRoom {
 	String file;
 	int reportOk;
 
-
-
-
-
 }

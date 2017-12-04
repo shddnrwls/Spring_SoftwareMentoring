@@ -57,6 +57,10 @@
 		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
 	</definition>
 	
+	<definition name="user/surveyApply" template="/WEB-INF/views/user/surveyApply.jsp">
+      	<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+    </definition>
+	
 	<!-- views/admin -->
 	<definition name="admin/adminMentorRoom" template="/WEB-INF/views/admin/adminMentorRoom.jsp">
 		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
@@ -78,4 +82,7 @@
 		<put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
 	</definition>
 	
+	<definition name="admin/adminReport" template="/WEB-INF/views/admin/adminReport.jsp">
+      <put-attribute name="menu" value="/WEB-INF/common/menu.jsp" />
+    </definition>
 </tiles-definitions>

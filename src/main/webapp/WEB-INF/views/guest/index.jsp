@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <c:url var="R" value="/" />
+<% pageContext.setAttribute("newLineChar", "\n"); %>
 
 <!DOCTYPE html>
 <html lang="en">

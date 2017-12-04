@@ -56,6 +56,7 @@ body {
 			<hr />
 			<img class="mentor"
 				src="image?userId=${ mentorRoom.student.user.id }" alt="이미지가 없습니다.">
+				
 			<hr />
 			<table class="table table-bordered">
 				<thead>

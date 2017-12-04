@@ -48,6 +48,8 @@
 			<li class="nav-item"><a class="nav-link js-scroll-trigger"
 				href="${R}user/questionList">문의사항</a></li>
 			<li class="nav-item"><a class="nav-link js-scroll-trigger"
+				href="${R}user/surveyApply">설문조사</a></li>
+			<li class="nav-item"><a class="nav-link js-scroll-trigger"
 				href="${R}user/myPage">My Page</a>
 				<hr /></li>
 
@@ -58,6 +60,9 @@
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="${R}admin/allMentorRoom"><button type="button"
 							class="btn btn-outline-light btn-sm">관리자 멘토방</button></a></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="${R}admin/adminReport"><button type="button"
+							class="btn btn-outline-light btn-sm">보고서 관리</button></a></li>
 			</sec:authorize>
 
 		</ul>

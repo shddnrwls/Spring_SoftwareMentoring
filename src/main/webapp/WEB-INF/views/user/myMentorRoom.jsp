@@ -52,7 +52,14 @@ body {
 			<h3>${ mentorRoom.student.user.name }'s
 				<em>MentorRoom</em>
 			</h3>
+			
+			<div class="pull-right">
+			<a class="nav-link js-scroll-trigger" href="${R}user/report">
+				<button class="btn btn-primary">보고서 제출</button></a>
+			</div>
+			
 			<div>${ mentorRoom.student.user.email }</div>
+			<br />
 			<hr />
 			<img class="mentor"
 				src="image?userId=${ mentorRoom.student.user.id }" alt="이미지가 없습니다.">

@@ -149,6 +149,7 @@
 							증명 업로드</label> <input type="file" name="fileUpload"
 							class="form-control-file" multiple> <br />
 					</div>
+					
 
 					<div class="btn-group" role="group" aria-label="Basic example">
 						<button type="submit" class="btn btn-primary" style="color: white">확인</button>
