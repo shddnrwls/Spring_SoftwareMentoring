@@ -32,6 +32,18 @@
 <!-- Custom styles for this template -->
 <link href="${R}res/css/resume.min.css" rel="stylesheet">
 
+<!-- 사진 필히 첨부하게하는 자바스크립트##########################################  -->
+<script>
+   function check() {
+     if(reportForm.fileUpload.value == "") {
+       alert("증명사진을 첨부해주세요.");
+       return false;
+     }
+     else return true;
+   }
+</script>
+<!-- 사진 필히 첨부하게하는 자바스크립트##########################################  -->
+
 </head>
 
 <body id="page-top">
@@ -46,7 +58,7 @@
             <hr />
 
 
-            <form:form method="post" modelAttribute="report" enctype="multipart/form-data">
+            <form:form method="post" modelAttribute="report" enctype="multipart/form-data" name="reportForm" onsubmit="return check()">
                <form style="padding: 10%;">
                   <div class="form-group">
                      <label for="exampleFormControlSelect1" style="float: left;">스터디
@@ -95,14 +107,14 @@
 
 
                   <div class="form-group">
-                     <label for="exampleFormControlFile1" style="float: left;">스터디
-                        증명 사진</label> <br /> <input type="file" name="fileUpload" class="form-control-file"
-                        multiple>
+                     <label for="exampleFormControlFile1" style="float: left;">스터디 증명 사진</label> <br /> 
+                        <input type="file" name="fileUpload" class="form-control-file" multiple>
                   </div>
 
 
                   <div class="btn-group" role="group" aria-label="Basic example"
                      style="padding-bottom: 20%">
+                     
                      <button type="submit" class="btn btn-secondary"
                         style="color: black">확인</button>
                      <button type="button" class="btn btn-secondary"
@@ -112,7 +124,6 @@
                         style="color: black; cursor: pointer"
                         onClick="location.href='myMentorRoom'">취소</button>
                   </div>
-
 
                </form>
             </form:form>

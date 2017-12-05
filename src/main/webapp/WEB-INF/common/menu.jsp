@@ -47,8 +47,10 @@
 				href="${R}user/myMentorRoom">멘토방</a></li>
 			<li class="nav-item"><a class="nav-link js-scroll-trigger"
 				href="${R}user/questionList">문의사항</a></li>
-			<li class="nav-item"><a class="nav-link js-scroll-trigger"
-				href="${R}user/surveyApply">설문조사</a></li>
+			<c:if test="${ optionList.surveyActive == 'on' }">
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="${R}user/surveyApply">설문조사</a></li>
+			</c:if>
 			<li class="nav-item"><a class="nav-link js-scroll-trigger"
 				href="${R}user/myPage">My Page</a>
 				<hr /></li>

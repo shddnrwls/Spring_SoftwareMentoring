@@ -149,15 +149,17 @@
 							증명 업로드</label> <input type="file" name="fileUpload"
 							class="form-control-file" multiple> <br />
 					</div>
-					
+
 
 					<div class="btn-group" role="group" aria-label="Basic example">
 						<button type="submit" class="btn btn-primary" style="color: white">확인</button>
-						<button type="button" class="btn btn-primary" style="color: white">초기화</button>
-						<button type="button" class="btn btn-primary" style="color: white">취소</button>
+						<button type="button" class="btn btn-primary" style="color: white"
+							onclick="location.href='mentorApply'">초기화</button>
+						<button type="button" class="btn btn-primary" style="color: white"
+							onclick="location.href='index'">취소</button>
 					</div>
-
 				</form:form>
+				
 			</div>
 		</div>
 

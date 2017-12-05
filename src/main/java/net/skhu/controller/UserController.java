@@ -34,6 +34,7 @@ import net.skhu.dto.Report;
 import net.skhu.dto.Student;
 import net.skhu.dto.SurveyURL;
 import net.skhu.dto.Team;
+import net.skhu.dto.TeamImageFile;
 import net.skhu.dto.User;
 import net.skhu.repository.AdminoptionRepository;
 import net.skhu.repository.DepartmentRepository;
@@ -49,6 +50,7 @@ import net.skhu.repository.ReportImageFileRepository;
 import net.skhu.repository.ReportRepository;
 import net.skhu.repository.StudentRepository;
 import net.skhu.repository.SurveyURLRepository;
+import net.skhu.repository.TeamImageFileRepository;
 import net.skhu.repository.TeamRepository;
 import net.skhu.repository.UserRepository;
 import net.skhu.service.UserService;
@@ -91,6 +93,8 @@ public class UserController {
 	SurveyURLRepository surveyURLRepository;
 	@Autowired
 	ReportImageFileRepository reportImageFileRepository;
+	@Autowired
+	TeamImageFileRepository teamImageFileRepository;
 
 	@RequestMapping("index")
 	public String index(Model model) {
@@ -225,8 +229,10 @@ public class UserController {
 		model.addAttribute("mentorList", mentorList);
 		model.addAttribute("optionList", optionList);
 
-		if(optionList.getMenteeActive() == null) return "redirect:/user/index";
-		else return "user/menteeSelect";
+		if (optionList.getMenteeActive() == null)
+			return "redirect:/user/index";
+		else
+			return "user/menteeSelect";
 	}
 
 	// @RequestMapping(value = "menteeSelectRoom/{id}", method =
@@ -343,7 +349,8 @@ public class UserController {
 
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
 
-		// newPassword = Encryption.encrypt(newPassword, Encryption.MD5); // MD5 암호화
+		// newPassword = Encryption.encrypt(newPassword, Encryption.MD5); // MD5
+		// 암호화
 
 		for (MultipartFile uploadFile : uploadFiles) {
 			if (uploadFile.getSize() <= 0)
@@ -536,46 +543,22 @@ public class UserController {
 		reportRepository.save(report);
 		pastReportRepository.save(pastReport);
 
-		/*
-		 * ReportImageFile oldReportImageFile =
-		 * reportImageFileRepository.findByReportId(report.getId()); for
-		 * (MultipartFile uploadFile : uploadFiles) { if (uploadFile.getSize()
-		 * <= 0) continue; String fileName =
-		 * Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
-		 * ReportImageFile reportImageFile = new ReportImageFile();
-		 * reportImageFile.setFileName(fileName);
-		 * reportImageFile.setFileSize((int) uploadFile.getSize());
-		 * reportImageFile.setFileTime(new Date());
-		 * reportImageFile.setData(uploadFile.getBytes());
-		 * reportImageFile.setReport(report); if (oldReportImageFile != null)
-		 * reportImageFileRepository.delete(oldReportImageFile);
-		 * reportImageFileRepository.save(reportImageFile); }
-		 */
-
+		TeamImageFile oldTeamImageFile = teamImageFileRepository.findByPastReportId(pastReport.getId());
+		for (MultipartFile uploadFile : uploadFiles) {
+			if (uploadFile.getSize() <= 0)
+				continue;
+			String fileName = Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
+			TeamImageFile teamImageFile = new TeamImageFile();
+			teamImageFile.setFileName(fileName);
+			teamImageFile.setFileSize((int) uploadFile.getSize());
+			teamImageFile.setFileTime(new Date());
+			teamImageFile.setData(uploadFile.getBytes());
+			teamImageFile.setPastReport(pastReport);
+			if (oldTeamImageFile != null)
+				teamImageFileRepository.delete(oldTeamImageFile);
+			teamImageFileRepository.save(teamImageFile);
+		}
 		return "redirect:index";
 	}
-
-	/*
-	 * ReportImageFile oldReportImageFile =
-	 * reportImageFileRepository.findByReportId(report.getId());
-	 *
-	 * for (MultipartFile uploadFile : uploadFiles) { if (uploadFile.getSize()
-	 * <= 0) continue; String fileName =
-	 * Paths.get(uploadFile.getOriginalFilename()).getFileName().toString();
-	 * ReportImageFile reportImageFile = new ReportImageFile();
-	 * reportImageFile.setFileName(fileName); reportImageFile.setFileSize((int)
-	 * uploadFile.getSize()); reportImageFile.setFileTime(new Date());
-	 * reportImageFile.setData(uploadFile.getBytes());
-	 * reportImageFile.setReport(report); if (oldReportImageFile != null)
-	 * reportImageFileRepository.delete(oldReportImageFile);
-	 * reportImageFileRepository.save(reportImageFile);
-	 *
-	 * }
-	 */
-
-	/*
-	 * @RequestParam("fileUpload") MultipartFile[] uploadFiles) throws
-	 * IOException {
-	 */
 
 }

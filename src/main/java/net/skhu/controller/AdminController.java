@@ -31,6 +31,7 @@ import net.skhu.dto.PastReport;
 import net.skhu.dto.Report;
 import net.skhu.dto.SurveyURL;
 import net.skhu.dto.Team;
+import net.skhu.dto.TeamImageFile;
 import net.skhu.dto.User;
 import net.skhu.model.Pagination;
 import net.skhu.repository.AdminoptionRepository;
@@ -44,6 +45,7 @@ import net.skhu.repository.ReportImageFileRepository;
 import net.skhu.repository.ReportRepository;
 import net.skhu.repository.StudentRepository;
 import net.skhu.repository.SurveyURLRepository;
+import net.skhu.repository.TeamImageFileRepository;
 import net.skhu.repository.TeamRepository;
 import net.skhu.repository.UserRepository;
 import net.skhu.service.TaskService;
@@ -81,6 +83,8 @@ public class AdminController {
 	SurveyURLRepository surveyURLRepository;
 	@Autowired
 	ReportImageFileRepository reportImageFileRepository;
+	@Autowired
+	TeamImageFileRepository teamImageFileRepository;
 
 	@RequestMapping("index")
 	public String list(Model model, Pagination pagination) {
@@ -193,22 +197,22 @@ public class AdminController {
 		return "admin/mentorApply";
 	}
 
-	/*@RequestMapping("readReportImage")
-	   public void readReportImage(@RequestParam(value = "reportId") int reportId, HttpServletResponse response)
-	         throws IOException {
-
-	      ReportImageFile reportImageFile = reportImageFileRepository.findByReportId(reportId);
-
-	      System.out.println(reportImageFile);
-	      if (reportImageFile == null)
-	         return;
-	      String fileName = URLEncoder.encode(reportImageFile.getFileName(), "UTF-8");
-	      response.setContentType(reportImageFile.getMimeType());
-	      response.setHeader("Content-Disposition", "filename=" + fileName + ";");
-	      try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
-	         output.write(reportImageFile.getData());
-	      }
-	   }*/
+	/*
+	 * @RequestMapping("readReportImage") public void
+	 * readReportImage(@RequestParam(value = "reportId") int reportId,
+	 * HttpServletResponse response) throws IOException {
+	 *
+	 * ReportImageFile reportImageFile =
+	 * reportImageFileRepository.findByReportId(reportId);
+	 *
+	 * System.out.println(reportImageFile); if (reportImageFile == null) return;
+	 * String fileName = URLEncoder.encode(reportImageFile.getFileName(),
+	 * "UTF-8"); response.setContentType(reportImageFile.getMimeType());
+	 * response.setHeader("Content-Disposition", "filename=" + fileName + ";");
+	 * try (BufferedOutputStream output = new
+	 * BufferedOutputStream(response.getOutputStream())) {
+	 * output.write(reportImageFile.getData()); } }
+	 */
 
 	@RequestMapping(value = "adminMentorRoom", method = RequestMethod.GET)
 	public String mentorRoom(Model model, @RequestParam("id") int id) {
@@ -330,19 +334,15 @@ public class AdminController {
 
 	}
 
-
-
 	@RequestMapping("adminReport")
 	public String report(Model model, Pagination pagination) {
-		//List<Report> reportList = reportRepository.findAll(pagination);
+		// List<Report> reportList = reportRepository.findAll(pagination);
 		List<PastReport> pastReportList = pastReportRepository.findAll(pagination);
 
 		model.addAttribute("orderBy", PastReportRepository.orderBy);
 		model.addAttribute("searchBy", PastReportRepository.searchBy);
-		//model.addAttribute("reportList", reportList);
+		// model.addAttribute("reportList", reportList);
 		model.addAttribute("pastReportList", pastReportList);
-
-
 
 		return "admin/adminReport";
 	}
@@ -356,7 +356,7 @@ public class AdminController {
 		reportList.add(pastReport);
 
 		WriteReportToExcelFile.writeReportToFile(
-				getNowYMD() + "_" + pastReport.getMentorId() + "_" + pastReport.getWeek() +"주차_report.xlsx",
+				getNowYMD() + "_" + pastReport.getMentorId() + "_" + pastReport.getWeek() + "주차_report.xlsx",
 				reportList, response);
 
 		return "redirect:/admin/index";
@@ -374,7 +374,8 @@ public class AdminController {
 	}
 
 	@RequestMapping("license")
-	public void license(@RequestParam(value = "mentorApplyId") int mentorApplyId, HttpServletResponse response) throws IOException {
+	public void license(@RequestParam(value = "mentorApplyId") int mentorApplyId, HttpServletResponse response)
+			throws IOException {
 		System.out.println(mentorApplyId);
 		LicenseFile licenseFile = licenseFileRepository.findByMentorApplyId(mentorApplyId);
 		if (licenseFile == null)
@@ -387,13 +388,12 @@ public class AdminController {
 		}
 	}
 
-	@RequestMapping(value="editSurveyURL", method = RequestMethod.POST)
+	@RequestMapping(value = "editSurveyURL", method = RequestMethod.POST)
 	public String editQuestionURL(Model model, SurveyURL surveyURL) {
 		surveyURL.setId(1);
 		surveyURLRepository.save(surveyURL);
 		return "redirect:/admin/index";
 	}
-
 
 	private String getNowYMD() {
 		StringBuffer dateResult = new StringBuffer();
@@ -402,6 +402,22 @@ public class AdminController {
 		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 		simpleDate.format(date, dateResult, new FieldPosition(1));
 		return dateResult.toString();
+	}
+
+	@RequestMapping("readTeamImage")
+	public void readTeamImage(@RequestParam(value = "pastReportId") int pastReportId, HttpServletResponse response)
+			throws IOException {
+
+		TeamImageFile teamImageFile = teamImageFileRepository.findByPastReportId(pastReportId);
+		if (teamImageFile == null)
+			return;
+
+		String fileName = URLEncoder.encode(teamImageFile.getFileName(), "UTF-8");
+		response.setContentType(teamImageFile.getMimeType());
+		response.setHeader("Content-Disposition", "filename=" + fileName + ";");
+		try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+			output.write(teamImageFile.getData());
+		}
 	}
 
 }
