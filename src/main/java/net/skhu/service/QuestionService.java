@@ -20,8 +20,8 @@ public class QuestionService {
 
 	public Question findOne(int id){
 		Question question = questionRepository.findOne(id);
-		question.setHit(question.getHit() + 1);
-		questionRepository.save(question);
+//		question.setHit(question.getHit() + 1);
+//		questionRepository.save(question);
 		return question;
 	}
 
@@ -46,8 +46,8 @@ public class QuestionService {
         Question question = new Question();
 
         question.setNo(no);						// no 최대값 + 1 전달
-        question.setStudent(new Student());
-        question.getStudent().setId(userId);
+		question.setStudent(new Student());
+		question.getStudent().setId(userId);
         question.setTitle(a.getTitle());
         question.setContent(a.getContent());
         question.setDate(new Date());

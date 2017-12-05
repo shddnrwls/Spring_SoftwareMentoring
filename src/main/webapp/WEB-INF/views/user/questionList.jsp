@@ -55,13 +55,10 @@
 				</c:if>
 
 			<div class="pull-right">
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<div class="pull-right">
-						<a class="btn btn-primary"
-							href="${R}user/noticeCreate?${ pagination.queryString }">새글작성</a>
-					</div>
-				</sec:authorize>
-
+				<div class="pull-right">
+					<a class="btn btn-primary"
+						href="${R}user/questionCreate?${ pagination.queryString }">새글작성</a>
+				</div>
 			</div>
 		</form:form>
 

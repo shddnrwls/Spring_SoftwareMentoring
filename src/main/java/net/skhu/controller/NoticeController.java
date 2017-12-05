@@ -16,6 +16,7 @@ import net.skhu.dto.Adminoption;
 import net.skhu.model.NoticeModel;
 import net.skhu.model.Pagination;
 import net.skhu.repository.AdminoptionRepository;
+import net.skhu.repository.NoticeRepository;
 import net.skhu.service.NoticeService;
 
 @Controller
@@ -26,6 +27,8 @@ public class NoticeController {
 	NoticeService noticeService;
 	@Autowired
 	AdminoptionRepository adminOptionRepository;
+	@Autowired
+	NoticeRepository noticeRepository;
 
 	@RequestMapping("noticeList")
 	public String list(Pagination pagination, Model model) {
@@ -46,6 +49,9 @@ public class NoticeController {
 
 		Adminoption optionList = adminOptionRepository.findOne(1);
 		model.addAttribute("optionList", optionList);
+
+		noticeRepository.findOne(id).setHit(noticeRepository.findOne(id).getHit() + 1);
+		noticeRepository.save(noticeRepository.findOne(id));
 
 		return "user/noticeView";
 	}
@@ -90,6 +96,7 @@ public class NoticeController {
 		if (bindingResult.hasErrors()) {
 			return "admin/noticeEdit";
 		}
+		noticeService.insertNotice(a);
 		// int id = noticeService.insertNotice(a);
 		return "redirect:noticeList?" + pagination.getQueryString();
 	}

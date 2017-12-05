@@ -19,8 +19,6 @@ public class NoticeService {
 
 	public Notice findOne(int id){
 		Notice notice = noticeRepository.findOne(id);
-		notice.setHit(notice.getHit() + 1);
-		noticeRepository.save(notice);
 		return notice;
 	}
 

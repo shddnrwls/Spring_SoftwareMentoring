@@ -65,6 +65,9 @@ public class QuestionController {
 		Adminoption optionList = adminOptionRepository.findOne(1);
 		model.addAttribute("optionList", optionList);
 
+		questionRepository.findOne(id).setHit(questionRepository.findOne(id).getHit() + 1);
+		questionRepository.save(questionRepository.findOne(id));
+
 		return "user/questionView";
 	}
 
@@ -129,6 +132,7 @@ public class QuestionController {
 		if (bindingResult.hasErrors()) {
 			return "user/questionEdit";
 		}
+		questionService.insertQuestion(a, UserService.getCurrentUser().getId());
 		// int id = questionService.insertQuestion(a, UserService.getCurrentUser().getId());
 		return "redirect:questionList?" + pagination.getQueryString();
 	}
