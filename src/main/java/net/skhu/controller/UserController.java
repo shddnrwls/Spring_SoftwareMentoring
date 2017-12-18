@@ -347,6 +347,10 @@ public class UserController {
 			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
 			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
 
+		Principal principal = SecurityContextHolder.getContext().getAuthentication();
+		String userId = principal.getName();
+		user = userRepository.findOneByUserId(userId);
+
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
 
 		// newPassword = Encryption.encrypt(newPassword, Encryption.MD5); // MD5
@@ -369,10 +373,12 @@ public class UserController {
 		}
 
 		if (!newPassword.equals("0"))
-			user.setPassword(newPassword);
-		System.out.println(user);
-		userRepository.save(user);
-		// studentRepository.save(professor);
+			student.getUser().setPassword(newPassword);
+		else
+			student.getUser().setPassword(user.getPassword());
+		System.out.println(student);
+		userRepository.save(student.getUser());
+		studentRepository.save(student);
 
 		return "redirect:myPage";
 	}
@@ -382,6 +388,10 @@ public class UserController {
 			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
 			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
 
+		Principal principal = SecurityContextHolder.getContext().getAuthentication();
+		String userId = principal.getName();
+		user = userRepository.findOneByUserId(userId);
+
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
 
 		for (MultipartFile uploadFile : uploadFiles) {
@@ -401,10 +411,12 @@ public class UserController {
 		}
 
 		if (!newPassword.equals("0"))
-			user.setPassword(newPassword);
-		System.out.println(user);
-		userRepository.save(user);
-		// professorRepository.save(professor);
+			professor.getUser().setPassword(newPassword);
+		else
+			professor.getUser().setPassword(user.getPassword());
+		System.out.println(professor);
+		userRepository.save(professor.getUser());
+		professorRepository.save(professor);
 
 		return "redirect:myPage";
 	}
@@ -414,6 +426,10 @@ public class UserController {
 			@RequestParam(value = "newPassword", defaultValue = "0") String newPassword,
 			@RequestParam("fileUpload") MultipartFile[] uploadFiles) throws IOException {
 
+		Principal principal = SecurityContextHolder.getContext().getAuthentication();
+		String userId = principal.getName();
+		user = userRepository.findOneByUserId(userId);
+
 		ImageFile oldImageFile = imageFileRepository.findByUserId(user.getId());
 
 		for (MultipartFile uploadFile : uploadFiles) {
@@ -433,9 +449,12 @@ public class UserController {
 		}
 
 		if (!newPassword.equals("0"))
-			user.setPassword(newPassword);
-		userRepository.save(user);
-		// employeeRepository.save(employee);
+			employee.getUser().setPassword(newPassword);
+		else
+			employee.getUser().setPassword(user.getPassword());
+
+		userRepository.save(employee.getUser());
+		employeeRepository.save(employee);
 
 		return "redirect:myPage";
 	}

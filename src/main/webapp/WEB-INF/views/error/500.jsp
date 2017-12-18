@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/security/tags"
-	prefix="sec"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
 <c:url var="R" value="/" />
+<%
+	pageContext.setAttribute("newLineChar", "\n");
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +19,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>User Index</title>
+<title>Error Page</title>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -62,12 +65,18 @@
 					href="${R}user/index">home</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="${R}user/noticeList">공지사항</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/mentorApply">멘토 신청</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="${R}user/menteeSelect">멘티 신청</a></li>
+				<c:if test="${ optionList.mentorActive == 'on' }">
+					<li class="nav-item"><a class="nav-link js-scroll-trigger"
+						href="${R}user/mentorApply">멘토 신청</a></li>
+				</c:if>
+				<c:if test="${ optionList.menteeActive == 'on' }">
+					<li class="nav-item"><a class="nav-link js-scroll-trigger"
+						href="${R}user/menteeSelect">멘티 신청</a></li>
+				</c:if>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="${R}user/myMentorRoom">멘토방</a></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="${R}user/questionList">문의사항</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="${R}user/myPage">My Page</a>
 					<hr /></li>
@@ -91,10 +100,22 @@
 	<!-- 메뉴바 끝 -->
 
 	<div class="container-fluid p-0">
-		<center>
-			<h2>500 다 돌아가</h2>
-		</center>
+
+		<section class="resume-section p-3 p-lg-5 d-flex d-column" id="main">
+			<div class="my-auto">
+				<h1 class="mb-0">
+					<span class="fa fa-book"> </span>SW <span class="text-primary">Mentoring</span>
+				</h1>
+				<h2>
+					<font color="gray">사용자의 요청이 실패했습니다.</font>
+				</h2>
+				<h4 style="color: gray;">Error Code: 500</h4>
+				<h4 style="color: gray;">다른 요청을 시도해주시기 바랍니다.</h4>
+			</div>
+		</section>
+
 	</div>
+
 
 	<!-- Bootstrap core JavaScript -->
 	<script src="${R}res/js/jquery.min.js"></script>
@@ -105,20 +126,6 @@
 
 	<!-- Custom scripts for this template -->
 	<script src="${R}res/js/resume.min.js"></script>
-
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-		integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-		integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-		crossorigin="anonymous"></script>
-
-	<script src="https://use.fontawesome.com/25b35a2279.js"></script>
 
 </body>
 

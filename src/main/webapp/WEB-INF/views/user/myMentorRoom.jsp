@@ -101,7 +101,7 @@ body {
 							<td>${ team.student.user.userId }</td>
 							<td>${ team.student.user.name }</td>
 							<td>${ team.student.grade }학년</td>
-							<td>권한</td>
+							<td>${ team.student.user.authority == "1" ? "멘티" : (team.student.user.authority == "2" ? "멘토" : "관리자") }</td>
 							<td>${ team.student.user.phoneNumber }</td>
 							<td>${team.student.user.email }</td>
 

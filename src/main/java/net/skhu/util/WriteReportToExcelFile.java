@@ -2,7 +2,6 @@ package net.skhu.util;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,165 +14,148 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import net.skhu.dto.PastReport;
-import net.skhu.dto.Report;
 
 public class WriteReportToExcelFile {
 
-   @SuppressWarnings("resource")
-   public static void writeReportToFile(String fileName, List<PastReport> reportList, HttpServletResponse response) throws Exception{
-      Workbook workbook = null;
+	@SuppressWarnings("resource")
+	public static void writeReportToFile(String fileName, List<PastReport> reportList, HttpServletResponse response)
+			throws Exception {
+		Workbook workbook = null;
 
-      if(fileName.endsWith("xlsx")){
-         workbook = new XSSFWorkbook();
-      }else if(fileName.endsWith("xls")){
-         workbook = new HSSFWorkbook();
-      }else{
-         throw new Exception("invalid file name, should be xls or xlsx");
-      }
+		if (fileName.endsWith("xlsx")) {
+			workbook = new XSSFWorkbook();
+		} else if (fileName.endsWith("xls")) {
+			workbook = new HSSFWorkbook();
+		} else {
+			throw new Exception("invalid file name, should be xls or xlsx");
+		}
 
-      Sheet sheet = workbook.createSheet("report");
+		Sheet sheet = workbook.createSheet("report");
 
-      int rowIndex = 0;
-      int excelname = 0; // 처음에는 ID 학번등 고정값을 넣기 위해 사용한 변수
+		int rowIndex = 0;
+		int excelname = 0; // 처음에는 ID 학번등 고정값을 넣기 위해 사용한 변수
 
-      PastReport report = reportList.get(0);
-      Row row = sheet.createRow(rowIndex++);
+		PastReport report = reportList.get(0);
+		Row row = sheet.createRow(rowIndex++);
 
-      Cell cell0 = row.createCell(0);
-      cell0.setCellValue("ID");
-      Cell cell1 = row.createCell(1);
-      cell1.setCellValue("주차");
-      Cell cell2 = row.createCell(2);
-      cell2.setCellValue("장소");
-      Cell cell3 = row.createCell(3);
-      cell3.setCellValue("내용");
-      Cell cell4 = row.createCell(4);
-      cell4.setCellValue("학기");
-      Cell cell5 = row.createCell(5);
-      cell5.setCellValue("참여멘티");
-      Cell cell6 = row.createCell(6);
-      cell6.setCellValue("멘토학번");
+		Cell cell0 = row.createCell(0);
+		cell0.setCellValue("ID");
+		Cell cell1 = row.createCell(1);
+		cell1.setCellValue("주차");
+		Cell cell2 = row.createCell(2);
+		cell2.setCellValue("장소");
+		Cell cell3 = row.createCell(3);
+		cell3.setCellValue("내용");
+		Cell cell4 = row.createCell(4);
+		cell4.setCellValue("학기");
+		Cell cell5 = row.createCell(5);
+		cell5.setCellValue("참여멘티");
+		Cell cell6 = row.createCell(6);
+		cell6.setCellValue("멘토학번");
 
+		row = sheet.createRow(rowIndex++);
 
-      row = sheet.createRow(rowIndex++);
+		cell0 = row.createCell(0);
+		cell0.setCellValue(report.getId());
+		cell1 = row.createCell(1);
+		cell1.setCellValue(report.getWeek());
+		cell2 = row.createCell(2);
+		cell2.setCellValue(report.getPlace());
+		cell3 = row.createCell(3);
+		cell3.setCellValue(report.getContents());
+		cell4 = row.createCell(4);
+		cell4.setCellValue(report.getYear());
+		cell5 = row.createCell(5);
+		cell5.setCellValue(report.getAttendedMentee());
+		cell6 = row.createCell(6);
+		cell6.setCellValue(report.getMentorId());
 
-      cell0 = row.createCell(0);
-      cell0.setCellValue(report.getId());
-      cell1 = row.createCell(1);
-      cell1.setCellValue(report.getWeek());
-      cell2 = row.createCell(2);
-      cell2.setCellValue(report.getPlace());
-      cell3 = row.createCell(3);
-      cell3.setCellValue(report.getContents());
-      cell4 = row.createCell(4);
-      cell4.setCellValue(report.getYear());
-      cell5 = row.createCell(5);
-      cell5.setCellValue(report.getAttendedMentee());
-      cell6 = row.createCell(6);
-      cell6.setCellValue(report.getMentorId());
+		System.out.println("어디가 오류일까나~~~~1");
 
-      System.out.println("어디가 오류일까나~~~~1");
+		// lets write the excel data to file now
 
-      //lets write the excel data to file now
+		FileOutputStream fos = new FileOutputStream(System.getProperty("user.home") + "/" + fileName);
+		workbook.write(fos);
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
+		try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+			workbook.write(output);
+		}
 
+	}
 
-      FileOutputStream fos = new FileOutputStream(System.getProperty("user.home")+"/"+fileName);
-      workbook.write(fos);
-      response.setContentType("application/octet-stream");
-      response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
-      try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
-         workbook.write(output);
-      }
+	// 선택한 애들 다운로드
+	@SuppressWarnings("resource")
+	public static void writeCheckReportToFile(String fileName, List<PastReport> reportList,
+			HttpServletResponse response) throws Exception {
+		Workbook workbook = null;
 
-   }
+		System.out.println("여기는?222");
 
+		if (fileName.endsWith("xlsx")) {
+			workbook = new XSSFWorkbook();
+		} else if (fileName.endsWith("xls")) {
+			workbook = new HSSFWorkbook();
+		} else {
+			throw new Exception("invalid file name, should be xls or xlsx");
+		}
 
-   @SuppressWarnings("resource")
-   public static void writeAllReportToFile(String fileName, List<Report> reportList) throws Exception{
-      Workbook workbook = null;
+		for (PastReport temp : reportList) {
+			Sheet sheet = workbook.createSheet(temp.getYear() + "_" + temp.getWeek() + "주차_" + temp.getMentorId());
 
-      if(fileName.endsWith("xlsx")){
-         workbook = new XSSFWorkbook();
-      }else if(fileName.endsWith("xls")){
-         workbook = new HSSFWorkbook();
-      }else{
-         throw new Exception("invalid file name, should be xls or xlsx");
-      }
+			int rowIndex = 0;
 
-      Sheet sheet = workbook.createSheet("report");
+			Row row = sheet.createRow(rowIndex++);
 
-      Iterator<Report> iterator = reportList.iterator();
+			Cell cell0 = row.createCell(0);
+			cell0.setCellValue("ID");
+			Cell cell1 = row.createCell(1);
+			cell1.setCellValue("주차");
+			Cell cell2 = row.createCell(2);
+			cell2.setCellValue("장소");
+			Cell cell3 = row.createCell(3);
+			cell3.setCellValue("내용");
+			Cell cell4 = row.createCell(4);
+			cell4.setCellValue("학기");
+			Cell cell5 = row.createCell(5);
+			cell5.setCellValue("참여멘티");
+			Cell cell6 = row.createCell(6);
+			cell6.setCellValue("멘토학번");
 
-      int rowIndex = 0;
-      int excelname = 0; // 처음에는 ID 학번등 고정값을 넣기 위해 사용한 변수
+			row = sheet.createRow(rowIndex++);
 
-      do{
-         Report report = iterator.next();
-         Row row = sheet.createRow(rowIndex++);
+			cell0 = row.createCell(0);
+			cell0.setCellValue(temp.getId());
+			cell1 = row.createCell(1);
+			cell1.setCellValue(temp.getWeek());
+			cell2 = row.createCell(2);
+			cell2.setCellValue(temp.getPlace());
+			cell3 = row.createCell(3);
+			cell3.setCellValue(temp.getContents());
+			cell4 = row.createCell(4);
+			cell4.setCellValue(temp.getYear());
+			cell5 = row.createCell(5);
+			cell5.setCellValue(temp.getAttendedMentee());
+			cell6 = row.createCell(6);
+			cell6.setCellValue(temp.getMentorId());
+		}
 
+		System.out.println("어디가 오류일까나~~~~1");
 
-         if(excelname==0){ // 처음에 고정값
-            Cell cell0 = row.createCell(0);
-            cell0.setCellValue("ID");
-            Cell cell1 = row.createCell(1);
-            cell1.setCellValue("주차");
-            Cell cell2 = row.createCell(2);
-            cell2.setCellValue("장소");
-            Cell cell3 = row.createCell(3);
-            cell3.setCellValue("내용");
-            Cell cell4 = row.createCell(4);
-            cell4.setCellValue("년도");
-            Cell cell5 = row.createCell(5);
-            cell5.setCellValue("학기");
+		// lets write the excel data to file now
+		FileOutputStream fos = new FileOutputStream(System.getProperty("user.home") + "/" + fileName);
+		workbook.write(fos);
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
+		try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+			workbook.write(output);
+		}
+		// workbook.write()
+		fos.close();
 
-            row = sheet.createRow(rowIndex++);
+		System.out.println("어디가 오류일까나~~~~2");
 
-            cell0 = row.createCell(0);
-            cell0.setCellValue(report.getId());
-            cell1 = row.createCell(1);
-            cell1.setCellValue(report.getWeek());
-            cell2 = row.createCell(2);
-            cell2.setCellValue(report.getPlace());
-            cell3 = row.createCell(3);
-            cell3.setCellValue(report.getContents());
-            cell4 = row.createCell(4);
-            cell4.setCellValue(report.getYear());
-            cell5 = row.createCell(5);
-            cell5.setCellValue(report.getSemester());
-
-            excelname++;
-
-         } else {  // 다음부터는 순차적으로 값이 들어감
-            Cell cell0 = row.createCell(0);
-            cell0.setCellValue(report.getId());
-            Cell cell1 = row.createCell(1);
-            cell1.setCellValue(report.getWeek());
-            Cell cell2 = row.createCell(2);
-            cell2.setCellValue(report.getPlace());
-            Cell cell3 = row.createCell(3);
-            cell3.setCellValue(report.getContents());
-            Cell cell4 = row.createCell(4);
-            cell4.setCellValue(report.getYear());
-            Cell cell5 = row.createCell(5);
-            cell5.setCellValue(report.getSemester());
-         }
-
-      }while(iterator.hasNext());
-
-
-      System.out.println("어디가 오류일까나~~~~1");
-
-      //lets write the excel data to file now
-      FileOutputStream fos = new FileOutputStream(System.getProperty("user.home")+"/"+fileName);
-      //workbook.write(fos);
-
-      //workbook.write()
-      fos.close();
-
-      System.out.println("어디가 오류일까나~~~~2");
-
-      System.out.println(fileName + " written successfully");
-   }
-
+		System.out.println(fileName + " written successfully");
+	}
 
 }

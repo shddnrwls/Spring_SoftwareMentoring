@@ -19,9 +19,11 @@ function verifynotify(field1, field2, result_id, match_html, nomatch_html) {
 			return false;
 		}
 
-		if (this.field1.value != "" && this.field1.value == this.field2.value) {
+		if (!this.field1.value)
+			r.innerHTML = "";
+		else if (this.field1.value == this.field2.value) {
 			r.innerHTML = this.match_html;
-		} else {
+		} else if (this.field1.value != this.field2.value) {
 			r.innerHTML = this.nomatch_html;
 		}
 	}
@@ -32,8 +34,8 @@ function verifyInput() {
 	verify.field1 = document.myPageForm.newPassword;
 	verify.field2 = document.myPageForm.password2;
 	verify.result_id = "password_result";
-	verify.match_html = "";
-	verify.nomatch_html = "<span style=\"color:red\">비밀번호 불일치<\/span>";
+	verify.match_html = "<span style=\"color:blue\">새 비밀번호 일치<\/span>";
+	verify.nomatch_html = "<span style=\"color:red\">새 비밀번호 불일치<\/span>";
 
 	// Update the result message
 	verify.check();

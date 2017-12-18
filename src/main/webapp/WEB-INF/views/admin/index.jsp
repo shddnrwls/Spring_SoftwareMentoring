@@ -39,7 +39,7 @@
 <body id="page-top">
 	<!-- 메뉴바 -->
 	<tiles:insertAttribute name="menu" />
-	
+
 	<div class="container-fluid p-5">
 
 		<ul class="nav nav-tabs">
@@ -127,16 +127,23 @@
 					<!-- <input type='button' onclick='check_all();' value='모두 선택' /> 
                              <input type='button' onclick='uncheck_all();' value='모두 해제' /> -->
 
-					<div class="pull-right">
+					<div class="btn-group pull-left" role="group"
+						aria-label="Basic example">
 						<button type="button" class="btn btn-success" data-toggle="modal"
-							data-target="#myModal2">회원 엑셀 업로드</button>
+							data-target="#myModal2">학생 업로드</button>&nbsp
+						<button type="button" class="btn btn-success" data-toggle="modal"
+							data-target="#myModal3">교수 업로드</button>&nbsp
+						<button type="button" class="btn btn-success" data-toggle="modal"
+							data-target="#myModal4">직원 업로드</button>
+					</div>
+					<div class="pull-right">
 						<button type="submit" class="btn btn-primary" data-confirm-delete>선택
 							회원 삭제</button>
 					</div>
 
 				</form>
 
-				<!-- Modal -->
+				<!-- 학생 Modal -->
 				<div class="modal" id="myModal2" tabindex="-1" role="dialog"
 					aria-labelledby="myModalLabel" aria-hidden="true"
 					style="color: black">
@@ -145,7 +152,65 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h3 class="modal-title" id="myModalLabel">EXCEL 파일을 등록하세요.</h3>
+									<h3 class="modal-title" id="myModalLabel">학생 엑셀 업로드</h3>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<input type="file" name="excelFile" class="form-control-file" />
+								</div>
+
+								<div class="modal-footer">
+									<button type="submit" class="btn btn-success">업로드</button>
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">닫기</button>
+								</div>
+							</div>
+						</div>
+					</form:form>
+				</div>
+
+				<!-- 교수 Modal -->
+				<div class="modal" id="myModal3" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel" aria-hidden="true"
+					style="color: black">
+					<form:form action="excelUploadPro" method="post"
+						enctype="multipart/form-data">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title" id="myModalLabel">교수 엑셀 업로드</h3>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<input type="file" name="excelFile" class="form-control-file" />
+								</div>
+
+								<div class="modal-footer">
+									<button type="submit" class="btn btn-success">업로드</button>
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">닫기</button>
+								</div>
+							</div>
+						</div>
+					</form:form>
+				</div>
+
+				<!-- 직원 Modal -->
+				<div class="modal" id="myModal4" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel" aria-hidden="true"
+					style="color: black">
+					<form:form action="excelUploadEmp" method="post"
+						enctype="multipart/form-data">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title" id="myModalLabel">직원 엑셀 업로드</h3>
 									<button type="button" class="close" data-dismiss="modal"
 										aria-label="Close">
 										<span aria-hidden="true">&times;</span>

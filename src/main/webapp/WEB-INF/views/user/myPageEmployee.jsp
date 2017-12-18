@@ -41,39 +41,38 @@
 <body id="page-top">
 	<!-- 메뉴바 -->
 	<tiles:insertAttribute name="menu" />
-
 	<div style="width: 60%; margin: auto; margin-bottom: 30px;">
 		<h1 style="padding-top: 5%;" align="center">MY PAGE</h1>
-		<form:form method="post" modelAttribute="user" name="myPageForm"
+		<form:form method="post" modelAttribute="employee" name="myPageForm"
 			action="myPageEmployee" enctype="multipart/form-data">
 			<div class="text-center">
 
-				<!-- 사진 이미지 자리 	-->
-				<img class="mentor" src="image?userId=${user.id}"
+				<!-- 사진 이미지 자리    -->
+				<img class="mentor" src="image?userId=${employee.user.id}"
 					class="img-responsive" alt="이미지가 없습니다."> <input type="file"
 					name="fileUpload" class="form-control-file" multiple> <br />
 
 				<fieldset disabled>
-					<label style="float: left;">ID(직원번호)</label>
-					<form:input path="userId" class="form-control" />
+					<label style="float: left;">ID(학번)</label>
+					<form:input path="user.userId" class="form-control" />
 					<br />
 				</fieldset>
 
-				<form:input type="hidden" path="userId" />
 				<form:input type="hidden" path="id" />
-				<form:input type="hidden" path="authority" />
-				<form:input type="hidden" path="name" />
-				<form:input type="hidden" path="password" />
-				<form:input type="hidden" path="job" />
+				<form:input type="hidden" path="user.userId" />
+				<form:input type="hidden" path="user.id" />
+				<form:input type="hidden" path="user.authority" />
+				<form:input type="hidden" path="user.name" />
+				<form:input type="hidden" path="user.job" />
 
 				<label class="form-control-label" style="float: left;">새
 					비밀번호</label> <input type="password" class="form-control" name="newPassword"
-					placeholder="영문 숫자조합 10자 이상" onkeyup="verify.check()"> <br />
-
-				<label class="form-control-label" style="float: left;">새
-					비밀번호 확인</label> <input type="password" class="form-control"
-					name="password2" placeholder="영문 숫자조합 10자 이상"
-					onkeyup="verify.check()">
+					placeholder="영문 숫자조합 10자 이상" onkeyup="verify.check()"
+					onblur="checkvalue()"> <br /> <label
+					class="form-control-label" style="float: left;">새 비밀번호 확인</label> <input
+					type="password" class="form-control" name="password2"
+					placeholder="영문 숫자조합 10자 이상" onkeyup="verify.check()"
+					onblur="checkvalue()">
 
 				<!-- 새 비밀번호 일치불일치 확인 자바스크립트  -->
 				<div id="password_result" style="float: left"></div>
@@ -81,19 +80,19 @@
 
 				<fieldset disabled>
 					<label style="float: left;">이름</label>
-					<form:input path="name" class="form-control" />
+					<form:input path="user.name" class="form-control" />
 					<br />
 				</fieldset>
 
 				<label class="form-control-label" style="float: left;">e-mail</label>
-				<form:input path="email" class="form-control" />
+				<form:input path="user.email" class="form-control" />
 				<br /> <label class="form-control-label" style="float: left;">핸드폰
 					번호</label>
-				<form:input path="phoneNumber" class="form-control" />
-				<br />
-
+				<form:input path="user.phoneNumber" class="form-control" />
+				<br /> <br />
 				<button type="submit" class="btn btn-primary">수정</button>
 				<button type="button" class="btn btn-default">취소</button>
+
 			</div>
 		</form:form>
 	</div>

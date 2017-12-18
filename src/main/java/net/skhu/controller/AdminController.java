@@ -232,6 +232,15 @@ public class AdminController {
 	public String success(Model model, @RequestParam("id") int id) {
 
 		MentorApply mentorApply = mentorApplyRepository.findOne(id);
+
+		User user = mentorApplyRepository.findOne(id).getStudent().getUser();
+
+		if ("1".equals(user.getAuthority())) {
+			user.setAuthority("2");
+		}
+
+		userRepository.save(user);
+
 		MentorRoom mentorRoom = new MentorRoom();
 		Team team = new Team();
 
@@ -305,6 +314,7 @@ public class AdminController {
 	}
 
 	/* excel view 로 뽑기 */
+	// 학생 업로드
 	@RequestMapping(value = "excelUpload", method = RequestMethod.POST)
 	public String excelUpload(Model model, MultipartHttpServletRequest request) throws Exception {
 
@@ -313,7 +323,7 @@ public class AdminController {
 		if (excelFile == null || excelFile.isEmpty()) {
 			throw new RuntimeException("엑셀파일을 선택 해 주세요.");
 		}
-		File destFile = new File("D:\\" + excelFile.getOriginalFilename());
+		File destFile = new File(System.getProperty("user.dir") + excelFile.getOriginalFilename());
 
 		try {
 			excelFile.transferTo(destFile);
@@ -321,15 +331,59 @@ public class AdminController {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 
-		List<User> users;
+		taskService.excelUpload(destFile);
+		destFile.delete();
 
-		users = taskService.excelUpload(destFile);
+		return "redirect:/admin/index";
 
-		for (User user : users) {
-			userRepository.save(user);
+	}
+
+	/* excel view 로 뽑기 */
+	// 교수 업로드
+	@RequestMapping(value = "excelUploadPro", method = RequestMethod.POST)
+	public String excelUploadPro(Model model, MultipartHttpServletRequest request) throws Exception {
+
+		MultipartFile excelFile = request.getFile("excelFile");
+		System.out.println("엑셀 파일 업로드 컨트롤러");
+		if (excelFile == null || excelFile.isEmpty()) {
+			throw new RuntimeException("엑셀파일을 선택 해 주세요.");
+		}
+		File destFile = new File(System.getProperty("user.dir") + excelFile.getOriginalFilename());
+
+		try {
+			excelFile.transferTo(destFile);
+		} catch (IllegalStateException | IOException e) {
+			throw new RuntimeException(e.getMessage(), e);
 		}
 
-		// FileUtils.delete(destFile.getAbsolutePath());
+		taskService.excelUploadPro(destFile);
+		destFile.delete();
+
+		return "redirect:/admin/index";
+
+	}
+
+	/* excel view 로 뽑기 */
+	// 직원 업로드
+	@RequestMapping(value = "excelUploadEmp", method = RequestMethod.POST)
+	public String excelUploadEmp(Model model, MultipartHttpServletRequest request) throws Exception {
+
+		MultipartFile excelFile = request.getFile("excelFile");
+		System.out.println("엑셀 파일 업로드 컨트롤러");
+		if (excelFile == null || excelFile.isEmpty()) {
+			throw new RuntimeException("엑셀파일을 선택 해 주세요.");
+		}
+		File destFile = new File(System.getProperty("user.dir") + excelFile.getOriginalFilename());
+
+		try {
+			excelFile.transferTo(destFile);
+		} catch (IllegalStateException | IOException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+
+		taskService.excelUploadEmp(destFile);
+		destFile.delete();
+
 		return "redirect:/admin/index";
 
 	}
@@ -363,12 +417,17 @@ public class AdminController {
 	}
 
 	@RequestMapping("excelView")
-	public String excelView(Model model) throws Exception {
+	public String excelView(Model model, @RequestParam("downloadReportIds") String[] downloadReportIds,
+			HttpServletResponse response) throws Exception {
 		System.out.println("농욱진");
 
-		List<Report> reportList = reportRepository.findAll();
+		List<PastReport> reportList = new ArrayList<>();
 
-		WriteReportToExcelFile.writeAllReportToFile("all_report.xlsx", reportList);
+		for (String reportId : downloadReportIds)
+			reportList.add(pastReportRepository.findOne(Integer.parseInt(reportId)));
+
+		System.out.println("여기는?");
+		WriteReportToExcelFile.writeCheckReportToFile("all_report.xlsx", reportList, response);
 
 		return "redirect:/admin/index";
 	}

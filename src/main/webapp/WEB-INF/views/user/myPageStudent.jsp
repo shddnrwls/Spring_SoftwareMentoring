@@ -43,27 +43,29 @@
 	<tiles:insertAttribute name="menu" />
 	<div style="width: 60%; margin: auto; margin-bottom: 30px;">
 		<h1 style="padding-top: 5%;" align="center">MY PAGE</h1>
-		<form:form method="post" modelAttribute="user" name="myPageForm"
+		<form:form method="post" modelAttribute="student" name="myPageForm"
 			action="myPageStudent" enctype="multipart/form-data">
 			<div class="text-center">
 
-				<!-- 사진 이미지 자리 	-->
-				<img class="mentor" src="image?userId=${user.id}"
+				<!-- 사진 이미지 자리    -->
+				<img class="mentor" src="image?userId=${student.user.id}"
 					class="img-responsive" alt="이미지가 없습니다."> <input type="file"
 					name="fileUpload" class="form-control-file" multiple> <br />
 
 				<fieldset disabled>
 					<label style="float: left;">ID(학번)</label>
-					<form:input path="userId" class="form-control" />
+					<form:input path="user.userId" class="form-control" />
 					<br />
 				</fieldset>
 
-				<form:input type="hidden" path="userId" />
 				<form:input type="hidden" path="id" />
-				<form:input type="hidden" path="authority" />
-				<form:input type="hidden" path="name" />
-				<form:input type="hidden" path="password" />
-				<form:input type="hidden" path="job" />
+
+				<form:input type="hidden" path="user.userId" />
+				<form:input type="hidden" path="user.id" />
+				<form:input type="hidden" path="user.authority" />
+				<form:input type="hidden" path="user.name" />
+				<form:input type="hidden" path="user.job" />
+				<form:input type="hidden" path="grade" />
 
 				<label class="form-control-label" style="float: left;">새
 					비밀번호</label> <input type="password" class="form-control" name="newPassword"
@@ -80,33 +82,32 @@
 
 				<fieldset disabled>
 					<label style="float: left;">이름</label>
-					<form:input path="name" class="form-control" />
+					<form:input path="user.name" class="form-control" />
 					<br />
 				</fieldset>
 
 				<label class="form-control-label" style="float: left;">e-mail</label>
-				<form:input path="email" class="form-control" />
+				<form:input path="user.email" class="form-control" />
 				<br /> <label class="form-control-label" style="float: left;">핸드폰
 					번호</label>
-				<form:input path="phoneNumber" class="form-control" />
+				<form:input path="user.phoneNumber" class="form-control" />
 				<br />
 
 				<!-- 학생인경우  -->
 
 				<fieldset disabled>
 					<label class="form-control-label" style="float: left;">권한</label> <input
-						class="form-control" value="${ user.authority == 1 ? "
+						class="form-control" value="${ student.user.authority == 1 ? "
 						멘티" : (user.authority== 2 ? "멘토" : "관리자") }" />
 				</fieldset>
 
-				<%-- 
-				<label style="float: left;">학과</label> 
-					<form:select path="student.department.id" class="form-control w200"
-						itemValue="id" itemLabel="depName"
-						items="${ departments }" /> <br />
- --%>
-				<br />
-				<button type="submit" class="btn btn-primary">수정</button>
+
+				<label style="float: left;">학과</label>
+				<form:select path="department.id" class="form-control w200"
+					itemValue="id" itemLabel="depName" items="${ departments }" />
+				<br /> <br />
+				<button type="submit" class="btn btn-primary"
+					onsubmit="return tocheckpw2()">수정</button>
 				<button type="button" class="btn btn-default">취소</button>
 
 			</div>
@@ -120,7 +121,7 @@
 	<script src="${R}res/js/jquery.easing.min.js"></script>
 	<script src="${R}res/js/jquery.min.js"></script>
 	<script src="${R}res/js/bootstrap.bundle.min.js"></script>
-	
+
 
 	<!-- Custom scripts for this template -->
 	<script src="${R}res/js/resume.min.js"></script>
