@@ -12,11 +12,16 @@ import net.skhu.model.Option;
 import net.skhu.model.Pagination;
 import net.skhu.model.QuestionModel;
 import net.skhu.repository.QuestionRepository;
+import net.skhu.repository.StudentRepository;
+import net.skhu.repository.UserRepository;
 
 @Service
 public class QuestionService {
 
 	@Autowired QuestionRepository questionRepository;
+	@Autowired UserRepository userRepository;
+	@Autowired StudentRepository studentRepository;
+
 
 	public Question findOne(int id){
 		Question question = questionRepository.findOne(id);
@@ -45,9 +50,10 @@ public class QuestionService {
         int no = (last == null) ? 1 : last.getNo() + 1;
         Question question = new Question();
 
+        Student student = studentRepository.findOneByUserId(userId);
+
         question.setNo(no);						// no 최대값 + 1 전달
-		question.setStudent(new Student());
-		question.getStudent().setId(userId);
+		question.setStudent(student);
         question.setTitle(a.getTitle());
         question.setContent(a.getContent());
         question.setDate(new Date());

@@ -22,126 +22,139 @@ import net.skhu.util.ExcelReadOption;
 
 @Service
 public class TaskService {
-	@Autowired
-	UserRepository userRepository;
-	@Autowired
-	StudentRepository studentRepository;
-	@Autowired
-	DepartmentRepository departmentRepository;
-	@Autowired
-	ProfessorRepository professorRepository;
-	@Autowired
-	EmployeeRepository employeeRepository;
+   @Autowired
+   UserRepository userRepository;
+   @Autowired
+   StudentRepository studentRepository;
+   @Autowired
+   DepartmentRepository departmentRepository;
+   @Autowired
+   ProfessorRepository professorRepository;
+   @Autowired
+   EmployeeRepository employeeRepository;
 
-	public void excelUpload(java.io.File destFile) throws Exception {
-		ExcelReadOption excelReadOption = new ExcelReadOption();
-		excelReadOption.setFilePath(destFile.getAbsolutePath());
-		excelReadOption.setOutputColumns("A", "B", "C", "D", "E", "F");
-		excelReadOption.setStartRow(2);
+   public void excelUpload(java.io.File destFile) throws Exception {
+      ExcelReadOption excelReadOption = new ExcelReadOption();
+      excelReadOption.setFilePath(destFile.getAbsolutePath());
+      excelReadOption.setOutputColumns("A", "B", "C", "D", "E", "F");
+      excelReadOption.setStartRow(2);
 
-		List<Map<String, String>> excelContent = ExcelRead.read(excelReadOption);
-		List<User> users = new ArrayList<User>();
-		for (Map<String, String> content : excelContent) {
-			User user = new User();
-			// System.out.println(content.toString());
+      List<Map<String, String>> excelContent = ExcelRead.read(excelReadOption);
+      List<User> users = new ArrayList<User>();
+      for (Map<String, String> content : excelContent) {
+         User user = new User();
+         // System.out.println(content.toString());
 
-			// 여기는 뭐하는 애임?
+         // 여기는 뭐하는 애임?
 
-			user.setUserId(content.get("A"));
-			user.setPassword(content.get("B"));
-			user.setName(content.get("C"));
-			user.setEmail(content.get("D"));
-			user.setPhoneNumber(content.get("E"));
+         user.setUserId(content.get("A"));
+         user.setPassword(content.get("B"));
+         user.setName(content.get("C"));
+         user.setEmail(content.get("D"));
+         user.setPhoneNumber(content.get("E"));
 
-			String phoneNum = user.getPhoneNumber();
-			String tempPswd = phoneNum.replaceAll("-", "");
+         String phoneNum = user.getPhoneNumber();
+         String tempPswd = phoneNum.replaceAll("-", "");
 
-			user.setPassword(tempPswd);
-			user.setAuthority("1");
-			user.setJob("1");
-			userRepository.save(user);
+         user.setPassword(tempPswd);
+         user.setAuthority("1");
+         user.setJob("1");
+         userRepository.save(user);
+         System.out.println("error1");
 
-			Student student = new Student();
-			Department department = departmentRepository.findOne(1);
+         Student student = new Student();
 
-			student.setUser(user);
-			student.setDepartment(department);
-			student.setGrade(Integer.parseInt(content.get("F")));
-			studentRepository.save(student);
-		}
-	}
+         System.out.println("error1");
+         Department department = departmentRepository.findOne(3);
 
-	public void excelUploadPro(java.io.File destFile) throws Exception {
-		ExcelReadOption excelReadOption = new ExcelReadOption();
-		excelReadOption.setFilePath(destFile.getAbsolutePath());
-		excelReadOption.setOutputColumns("A", "B", "C", "D", "E", "F", "G");
-		excelReadOption.setStartRow(2);
+         System.out.println("error1");
 
-		List<Map<String, String>> excelContent = ExcelRead.read(excelReadOption);
-		List<User> users = new ArrayList<User>();
-		for (Map<String, String> content : excelContent) {
-			User user = new User();
-			// System.out.println(content.toString());
+         student.setUser(user);
 
-			// 여기는 뭐하는 애임?
+         System.out.println("error1");
+         student.setDepartment(department);
 
-			user.setUserId(content.get("A"));
-			user.setPassword(content.get("B"));
-			user.setName(content.get("C"));
-			user.setEmail(content.get("D"));
-			user.setPhoneNumber(content.get("E"));
+         System.out.println("error1");
+         student.setGrade(Integer.parseInt(content.get("F")));
 
-			String phoneNum = user.getPhoneNumber();
-			String tempPswd = phoneNum.replaceAll("-", "");
+         System.out.println("error1");
+         studentRepository.save(student);
 
-			user.setPassword(tempPswd);
-			user.setAuthority("3");
-			user.setJob("2");
-			userRepository.save(user);
+         System.out.println("error1");
+      }
+   }
 
-			Professor professor = new Professor();
+   public void excelUploadPro(java.io.File destFile) throws Exception {
+      ExcelReadOption excelReadOption = new ExcelReadOption();
+      excelReadOption.setFilePath(destFile.getAbsolutePath());
+      excelReadOption.setOutputColumns("A", "B", "C", "D", "E", "F", "G");
+      excelReadOption.setStartRow(2);
 
-			professor.setUser(user);
-			professor.setLabNumber(content.get("F"));
-			professor.setLabPhoneNumber(content.get("G"));
+      List<Map<String, String>> excelContent = ExcelRead.read(excelReadOption);
+      List<User> users = new ArrayList<User>();
+      for (Map<String, String> content : excelContent) {
+         User user = new User();
+         // System.out.println(content.toString());
 
-			professorRepository.save(professor);
-		}
-	}
+         // 여기는 뭐하는 애임?
 
-	public void excelUploadEmp(java.io.File destFile) throws Exception {
-		ExcelReadOption excelReadOption = new ExcelReadOption();
-		excelReadOption.setFilePath(destFile.getAbsolutePath());
-		excelReadOption.setOutputColumns("A", "B", "C", "D", "E");
-		excelReadOption.setStartRow(2);
+         user.setUserId(content.get("A"));
+         user.setPassword(content.get("B"));
+         user.setName(content.get("C"));
+         user.setEmail(content.get("D"));
+         user.setPhoneNumber(content.get("E"));
 
-		List<Map<String, String>> excelContent = ExcelRead.read(excelReadOption);
-		List<User> users = new ArrayList<User>();
-		for (Map<String, String> content : excelContent) {
-			User user = new User();
-			// System.out.println(content.toString());
+         String phoneNum = user.getPhoneNumber();
+         String tempPswd = phoneNum.replaceAll("-", "");
 
-			// 여기는 뭐하는 애임?
+         user.setPassword(tempPswd);
+         user.setAuthority("3");
+         user.setJob("2");
+         userRepository.save(user);
 
-			user.setUserId(content.get("A"));
-			user.setPassword(content.get("B"));
-			user.setName(content.get("C"));
-			user.setEmail(content.get("D"));
-			user.setPhoneNumber(content.get("E"));
+         Professor professor = new Professor();
 
-			String phoneNum = user.getPhoneNumber();
-			String tempPswd = phoneNum.replaceAll("-", "");
+         professor.setUser(user);
+         professor.setLabNumber(content.get("F"));
+         professor.setLabPhoneNumber(content.get("G"));
 
-			user.setPassword(tempPswd);
-			user.setAuthority("3");
-			user.setJob("3");
-			userRepository.save(user);
+         professorRepository.save(professor);
+      }
+   }
 
-			Employee employee = new Employee();
-			employee.setUser(user);
+   public void excelUploadEmp(java.io.File destFile) throws Exception {
+      ExcelReadOption excelReadOption = new ExcelReadOption();
+      excelReadOption.setFilePath(destFile.getAbsolutePath());
+      excelReadOption.setOutputColumns("A", "B", "C", "D", "E");
+      excelReadOption.setStartRow(2);
 
-			employeeRepository.save(employee);
-		}
-	}
+      List<Map<String, String>> excelContent = ExcelRead.read(excelReadOption);
+      List<User> users = new ArrayList<User>();
+      for (Map<String, String> content : excelContent) {
+         User user = new User();
+         // System.out.println(content.toString());
+
+         // 여기는 뭐하는 애임?
+
+         user.setUserId(content.get("A"));
+         user.setPassword(content.get("B"));
+         user.setName(content.get("C"));
+         user.setEmail(content.get("D"));
+         user.setPhoneNumber(content.get("E"));
+
+         String phoneNum = user.getPhoneNumber();
+         String tempPswd = phoneNum.replaceAll("-", "");
+
+         user.setPassword(tempPswd);
+         user.setAuthority("3");
+         user.setJob("3");
+         userRepository.save(user);
+
+         Employee employee = new Employee();
+         employee.setUser(user);
+
+         employeeRepository.save(employee);
+      }
+   }
 
 }

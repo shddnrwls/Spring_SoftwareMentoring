@@ -24,7 +24,7 @@ function changeRadio(userId, authority, pastAuthority, pagination) {
 		return;
 
 	if (confirm("권한을 변경하시겠습니까?") == true) {
-		location.href = "/mentoringNew/admin/changeAuthority?userId=" + userId
+		location.href = "/DB_capstone/admin/changeAuthority?userId=" + userId
 				+ "&authority=" + authority + "&" + pagination;
 	} else {
 		location.href = "index?" + pagination;

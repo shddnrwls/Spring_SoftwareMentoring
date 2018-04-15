@@ -99,8 +99,7 @@
 								<td>${ pastReport.depName }</td>
 								<td>${ pastReport.attendedMentee }</td>
 								<td>${ pastReport.year }</td>
-								<td><a href="${R}admin/excelView/${pastReport.id}"><button
-											type="submit" class="btn btn-primary btn-sm">▼</button></a> <a
+								<td><a href="${R}admin/excelView/${pastReport.id}">▼</a> <a
 									href="readTeamImage?pastReportId=${ pastReport.id }"
 									target="_blank" BORDER="0">
 										<button type="button" class="btn btn-primary btn-sm">img</button>

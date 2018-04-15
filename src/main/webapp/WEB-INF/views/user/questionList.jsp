@@ -51,7 +51,7 @@
 				<form:input path="st" class="form-control" placeholder="검색문자열" />&nbsp
 				<button type="submit" class="btn btn-default">검색</button>&nbsp
 				<c:if test="${ pagination.sb > 0 || pagination.ob > 0}">
-				<a class="btn btn-default" href="noticeList?pg=1">검색취소</a>&nbsp
+				<a class="btn btn-default" href="questionList?pg=1">검색취소</a>&nbsp
 				</c:if>
 
 			<div class="pull-right">

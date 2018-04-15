@@ -97,7 +97,7 @@
 
 				<fieldset disabled>
 					<label class="form-control-label" style="float: left;">권한</label> <input
-						class="form-control" value="${ student.user.authority == 1 ? "
+						class="form-control" style="float: left;" value="${ student.user.authority == 1 ? "
 						멘티" : (user.authority== 2 ? "멘토" : "관리자") }" />
 				</fieldset>
 
